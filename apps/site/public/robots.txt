@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://app.rustzen.dev/sitemap.xml
+Sitemap: https://rustzen.dev/sitemap.xml

@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://app.rustzen.dev',
+  site: 'https://rustzen.dev',
   output: 'static',
 });

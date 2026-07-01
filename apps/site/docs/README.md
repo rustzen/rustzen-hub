@@ -1,6 +1,6 @@
 # apps/site Docs
 
-`apps/site` is the Rustzen product site at `app.rustzen.dev`. It is an Astro static site with Vercel deployment configuration.
+`apps/site` is the Rustzen product site at `rustzen.dev`. It is an Astro static site with Vercel deployment configuration.
 
 ## Docs
 

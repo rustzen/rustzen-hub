@@ -20,7 +20,7 @@ export const product = {
   purchase: {
     label: 'Get Pro — $10/year',
     labelZh: '升级 Pro — $10/年',
-    href: 'https://console.rustzen.com/api/billing/checkout?product=rustzen-clear&source=site',
+    href: 'https://console.rustzen.dev/api/billing/checkout?product=rustzen-clear&source=site',
     price: '$10/year',
     deviceLimit: 'up to 3 devices',
     free: 'Free scan, preview, permissions & updates',
@@ -29,7 +29,7 @@ export const product = {
   download: {
     label: 'Download for macOS',
     labelZh: '下载 macOS 版',
-    href: 'https://console.rustzen.com/api/updates/download/latest?platform=darwin-universal&download=1',
+    href: 'https://console.rustzen.dev/api/updates/download/latest?platform=darwin-universal&download=1',
     version: 'latest',
   },
   highlights: [
@@ -159,7 +159,7 @@ export const product = {
       ],
       cta: 'Download',
       ctaZh: '下载',
-      href: 'https://console.rustzen.com/api/updates/download/latest?platform=darwin-universal&download=1',
+      href: 'https://console.rustzen.dev/api/updates/download/latest?platform=darwin-universal&download=1',
       featured: false,
     },
     {
@@ -190,7 +190,7 @@ export const product = {
       ],
       cta: 'Get Pro',
       ctaZh: '升级 Pro',
-      href: 'https://console.rustzen.com/api/billing/checkout?product=rustzen-clear&source=site',
+      href: 'https://console.rustzen.dev/api/billing/checkout?product=rustzen-clear&source=site',
       featured: true,
     },
   ],

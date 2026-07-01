@@ -2,7 +2,7 @@
 
 ## Current Deployment Class
 
-`apps/site` is a Vercel static product site deployed for `app.rustzen.dev`. Deployment is governed by `vercel.json` and the Astro build output, not by Rust service deployment conventions.
+`apps/site` is a Vercel static product site deployed for `rustzen.dev`. Deployment is governed by `vercel.json` and the Astro build output, not by Rust service deployment conventions.
 
 ## Committed Vercel Configuration
 
@@ -52,7 +52,7 @@ Current status:
 | --- | --- |
 | preview env | not verified |
 | production env | not verified |
-| custom domains | `app.rustzen.dev` verified on Vercel during the rename cleanup |
+| custom domains | `rustzen.dev` verified on Vercel during the rename cleanup |
 | serverless/runtime limits | not verified |
 | Vercel project/team from committed source | not present |
 | Vercel project/team from `.vercel/project.json` | ignored/local-only; verify before use |

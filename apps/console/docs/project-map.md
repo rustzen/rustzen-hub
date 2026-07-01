@@ -12,9 +12,9 @@ Command evidence:
   synced with `origin/main` on 2026-06-30 after the local directory rename.
 - `git -C apps/console status --ignored --short`: `.env.local`, `.next/`,
   `.vercel/`, and `node_modules/` are ignored/local-only.
-- The legacy Vercel deployment snapshot belonged to the pre-migration checkout.
-  Treat the new `rustzen-hub` Vercel project/domain state as not reverified until
-  checked against the live Vercel dashboard.
+- The pre-cutover Vercel console project is still the source of production env
+  names and should be reused during the `rustzen-hub` migration to avoid
+  dropping database, Blob, Creem, admin, and license settings.
 - `pg_isready -h 127.0.0.1 -p 5432`: local Homebrew PostgreSQL accepts
   connections.
 - `psql -h 127.0.0.1 -p 5432 -d rustzen_console_test`: local test database is
@@ -29,7 +29,7 @@ Command evidence:
 | Styling | Tailwind CSS via `postcss.config.mjs` plus `src/app/globals.css` | source |
 | Database | Prisma + PostgreSQL | source; local test DB verified |
 | Analytics | `@vercel/analytics` in `src/app/layout.tsx` | source |
-| Hosting target | target domain `console.rustzen.com` | not reverified after the `rustzen-hub` migration |
+| Hosting target | target domain `console.rustzen.dev` | cutover target |
 
 ## Package Manager And Commands
 
@@ -137,14 +137,15 @@ From `.env.example`:
 Live billing product identifierentifiers are runtime configuration and must be provided
 through `CREEM_RUSTZEN_CLEAR_PRODUCT_ID`; live values must not be committed.
 
-The intended production domains are `https://console.rustzen.com` for the
-dashboard/API and `https://app.rustzen.dev` for public checkout return links.
-Real preview/prod Vercel env values still require live dashboard verification.
+The intended production domains are `https://console.rustzen.dev` for the
+dashboard/API and `https://rustzen.dev` for public checkout return links.
+Live Vercel env names and grouping were verified on 2026-07-01; secret values
+remain Vercel-only and must not be committed.
 
 ## High-Risk Areas
 
-- Production Vercel env is empty; deploys will not have database or secret env
-  until configured.
+- Production deploys depend on the existing Vercel env set. Reuse or migrate it
+  explicitly before switching Git source or replacing the project.
 - Prisma schema changes affect production data and need an explicit migration
   gate.
 - `pnpm db:push` mutates the target database. Use only against local test DB
@@ -163,8 +164,8 @@ Real preview/prod Vercel env values still require live dashboard verification.
   no signing secret is configured.
 - `.env.local`, `.next/`, `.vercel/`, and `node_modules/` are ignored/local-only
   and not committed deployment facts.
-- Vercel domain, production env, preview env, and runtime limits are not
-  verified.
+- Vercel secret values, final domain propagation, and runtime limits are not
+  verified by committed source.
 
 ## Recommended Reading Order
 

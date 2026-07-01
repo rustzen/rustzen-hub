@@ -13,14 +13,14 @@ PostgreSQL. Local validation used Homebrew PostgreSQL 17 and a local
 
 | Item | Current evidence | Status |
 | --- | --- | --- |
-| Project/team | `.vercel/project.json` from the legacy checkout pointed to a Vercel project under `abin-projects` | historical local link; not committed deploy truth |
-| Domain | `console.rustzen.com` | target domain for the new architecture; live Vercel binding not reverified in this migration |
+| Project/team | Vercel project `cloud` under `abin-projects` is the pre-cutover console project and carries the production env set | live Vercel query on 2026-07-01 |
+| Domain | `console.rustzen.dev` | target domain for the new architecture; bind during the `rustzen-hub` cutover |
 | Framework | Next.js from `package.json` and `src/app` | source |
 | Build command | `pnpm build` -> `node scripts/with-env.mjs prisma generate && next build` | verified locally |
 | Output directory | Next.js managed output | local build verified; Vercel output not verified |
 | Package manager | `pnpm-lock.yaml`, `pnpm-workspace.yaml` | source |
 | Env source | `.env.example` names | source |
-| Vercel env | Vercel project settings | not reverified in this pass |
+| Vercel env | Existing `cloud` Vercel project env includes database, Blob, Creem, admin, license, and public URL groups | live Vercel query on 2026-07-01; values not committed |
 | Runtime limits | Not found | not verified |
 | `vercel.json` | Not found | not verified |
 | `next.config.*` | Not found | not verified |
@@ -38,18 +38,18 @@ From `.env.example`:
 | --- | --- | --- |
 | Database | `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING` | Prisma connectivity and migration target |
 | Database platform reserve | `POSTGRES_URL` | Vercel/Postgres compatibility value; current Prisma datasource does not read it |
-| Public URLs | `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SITE_URL` | `NEXT_PUBLIC_APP_URL` should point at `https://console.rustzen.com`; `NEXT_PUBLIC_SITE_URL` should point at `https://app.rustzen.dev` for public checkout return links |
+| Public URLs | `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SITE_URL` | `NEXT_PUBLIC_APP_URL` should point at `https://console.rustzen.dev`; `NEXT_PUBLIC_SITE_URL` should point at `https://rustzen.dev` for public checkout return links |
 | Admin auth | `RUSTZEN_ADMIN_USERNAME`, `RUSTZEN_ADMIN_PASSWORD`, `RUSTZEN_ADMIN_SECRET`, `RUSTZEN_ADMIN_API_TOKEN` | Dashboard credential handling, session signing, and operational API access |
 | License/webhook | `LICENSE_JWT_SECRET`, `LEMONSQUEEZY_WEBHOOK_SECRET`, `CREEM_WEBHOOK_SECRET` | `LICENSE_JWT_SECRET` signs opaque license bearer tokens and is required in production; webhook secrets verify provider HMAC signatures |
 | Billing checkout | `CREEM_API_KEY`, `CREEM_RUSTZEN_CLEAR_PRODUCT_ID`, `CREEM_CHECKOUT_SUCCESS_URL` | Rustzen Clear Pro checkout and subscription fulfillment; live product identifierentifiers must be configured through deployment secrets |
 | Zen Clear updater/downloads | `RUSTZEN_CLEAR_UPDATE_MANIFEST_URL`, `RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN` | Manifest source and optional Blob origin allow-list for rewriting update asset URLs through `/api/updates/download`; `/api/updates/download/latest` resolves the current DMG for manual downloads, while `format=updater` resolves the updater archive |
 | Legacy license proxy | `RUSTZEN_LICENSE_SERVER_URL`, `RUSTZEN_LICENSE_SERVER_TOKEN` | Optional external license-server compatibility path, not the default desktop-client API |
 
-The intended production domains are `https://console.rustzen.com` for the
-dashboard/API and `https://app.rustzen.dev` for the public site. The legacy
-deployment snapshot from 2026-06-25 must not be treated as proof that the new
-`rustzen-hub` monorepo is deployed. Preview and production Vercel project links,
-domains, and env values require live dashboard verification after migration.
+The intended production domains are `https://console.rustzen.dev` for the
+dashboard/API and `https://rustzen.dev` for the public site. Reuse the existing
+Vercel console project during the cutover so production database, Blob, Creem,
+admin, and license env values are not dropped. Values still belong in Vercel
+project settings, not committed files.
 Billing webhook events must identify the Rustzen product through metadata or the
 configured product identifier; webhook ingestion records events without creating a
 license when the product cannot be resolved.
@@ -108,11 +108,14 @@ testing require explicit user approval.
 
 ## Verified
 
-- Vercel domain: `console.rustzen.com` target selected for the new architecture; live binding not reverified in this migration.
+- Vercel target: reuse the existing console project carrying the production env
+  set, then bind `console.rustzen.dev` during cutover.
 
 ## Not Verified
 
-- Vercel preview/prod environment values; current Vercel project has no env vars.
+- Concrete Vercel preview/prod environment values; only env names and grouping
+  were verified, not secret contents.
+- Production `console.rustzen.dev` response after DNS propagation.
 - Production PostgreSQL database availability.
 - Production Prisma migration state.
 - Billing webhook delivery and live product configuration.

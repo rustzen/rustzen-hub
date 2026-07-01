@@ -20,14 +20,14 @@ test('builds a checkout request for the Rustzen Clear Creem product', () => {
   const request = buildCreemCheckoutRequest({
     productCode: 'rustzen-clear',
     requestId: 'rz_checkout_123',
-    successUrl: 'https://app.rustzen.dev/checkout/success',
+    successUrl: 'https://rustzen.dev/checkout/success',
     productIds: { 'rustzen-clear': TEST_RUSTZEN_CLEAR_CREEM_PRODUCT_ID },
   });
 
   assert.deepEqual(request, {
     product_id: TEST_RUSTZEN_CLEAR_CREEM_PRODUCT_ID,
     request_id: 'rz_checkout_123',
-    success_url: 'https://app.rustzen.dev/checkout/success',
+    success_url: 'https://rustzen.dev/checkout/success',
     metadata: {
       product: 'rustzen-clear',
       source: 'console',

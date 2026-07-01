@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`apps/site` publishes the Rustzen brand and Zen Clear product content for the product site at `app.rustzen.dev`.
+`apps/site` publishes the Rustzen brand and Zen Clear product content for the product site at `rustzen.dev`.
 
 The site currently represents:
 
