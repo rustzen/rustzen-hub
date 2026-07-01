@@ -3,7 +3,18 @@ export type Locale = 'en' | 'zh';
 const ZH_PREFIX = '/zh';
 
 /** Slugs (relative to locale root) that have a /zh mirror. '' === home. */
-const MIRRORED = new Set(['', 'products', 'products/clear', 'download', 'docs', 'about', 'pricing', 'help', 'contact']);
+const MIRRORED = new Set([
+  '',
+  'products',
+  'products/clear',
+  'products/clipboard',
+  'products/zipper',
+  'docs',
+  'about',
+  'pricing',
+  'help',
+  'contact',
+]);
 
 export function getLocale(pathname: string): Locale {
   return pathname === ZH_PREFIX || pathname.startsWith(`${ZH_PREFIX}/`) ? 'zh' : 'en';

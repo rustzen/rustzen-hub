@@ -1,5 +1,5 @@
 export const product = {
-  name: 'Zen Clear',
+  name: 'Rustzen Clear',
   eyebrow: 'Native macOS cleaner for developers',
   eyebrowZh: '为开发者打造的原生 macOS 清理工具',
   // Hero headline (marketing line) — replaces the bare product name as H1.
@@ -243,3 +243,74 @@ export const product = {
   proof:
     'Cleanup is preview-first: scan results and explanations are shown before any cleanup runs.',
 } as const;
+
+export const githubUrl = 'https://github.com/rustzen';
+export const docsUrl = '/docs';
+export const consoleUrl = 'https://console.rustzen.dev';
+
+export const products = [
+  {
+    name: 'Rustzen Clear',
+    nameZh: 'Rustzen Clear',
+    slug: 'clear',
+    href: '/products/clear',
+    status: 'Beta',
+    statusZh: 'Beta',
+    summary: 'A native macOS cleanup tool for developer cache, build output, AI tool state, and local residue.',
+    summaryZh: '面向开发缓存、构建产物、AI 工具数据与本地残留的原生 macOS 清理工具。',
+    fit: 'For developers whose Mac fills up with generated project data.',
+    fitZh: '适合经常被项目生成数据占满磁盘的开发者。',
+    downloadHref: product.download.href,
+    githubHref: 'https://github.com/rustzen/rustzen-clear',
+    docsHref: '/products/clear',
+    accent: 'clear',
+  },
+  {
+    name: 'Rustzen Clipboard',
+    nameZh: 'Rustzen Clipboard',
+    slug: 'clipboard',
+    href: '/products/clipboard',
+    status: 'Planned',
+    statusZh: '规划中',
+    summary: 'A local-first clipboard workflow tool for repeated writing, coding, and operational snippets.',
+    summaryZh: '本地优先的剪切板工作流工具，面向写作、编码和运营片段复用。',
+    fit: 'For makers who reuse snippets without sending private clipboard data to a server.',
+    fitZh: '适合希望复用片段、但不想把私密剪切板数据发到服务器的用户。',
+    downloadHref: '',
+    githubHref: 'https://github.com/rustzen/rustzen-clipboard',
+    docsHref: '/docs',
+    accent: 'clipboard',
+  },
+  {
+    name: 'Rustzen Zipper',
+    nameZh: 'Rustzen Zipper',
+    slug: 'zipper',
+    href: '/products/zipper',
+    status: 'CLI',
+    statusZh: 'CLI',
+    summary: 'A small compression and extraction CLI for predictable archives in scripts and release workflows.',
+    summaryZh: '用于脚本和发布流程的压缩 / 解压 CLI，让归档行为更可预期。',
+    fit: 'For release scripts, automation jobs, and repeatable local packaging.',
+    fitZh: '适合发布脚本、自动化任务和可重复的本地打包流程。',
+    downloadHref: '',
+    githubHref: 'https://github.com/rustzen/rustzen-zipper',
+    docsHref: '/docs',
+    accent: 'zipper',
+  },
+  {
+    name: 'Rustzen Console',
+    nameZh: 'Rustzen Console',
+    slug: 'console',
+    href: consoleUrl,
+    status: 'Cloud',
+    statusZh: '云端',
+    summary: 'The Rustzen product console for releases, license surfaces, billing hooks, and operational APIs.',
+    summaryZh: 'Rustzen 产品控制台，承载发布、授权、计费回调和运维 API 能力。',
+    fit: 'For managing Rustzen products and the services behind desktop and CLI tools.',
+    fitZh: '用于管理 Rustzen 产品，以及桌面工具和 CLI 背后的服务能力。',
+    downloadHref: '',
+    githubHref: 'https://github.com/rustzen/rustzen-hub',
+    docsHref: '/docs',
+    accent: 'console',
+  },
+] as const;

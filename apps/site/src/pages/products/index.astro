@@ -1,7 +1,7 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Button from '../../components/Button.astro';
-import { product } from '../../data/product';
+import { githubUrl, products } from '../../data/product';
 import { getLocale, pick, type Locale } from '../../i18n';
 
 interface Props {
@@ -12,82 +12,173 @@ const { locale = getLocale(Astro.url.pathname) } = Astro.props;
 
 <SiteLayout
   title={pick(locale, 'Products — Rustzen', '产品 — Rustzen')}
-  description={pick(locale, 'Rustzen products for local development, productivity, and practical developer workflows.', 'Rustzen 面向本地开发、效率工具和开发者工作流的产品。')}
+  description={pick(locale, 'Rustzen products for local development, productivity, CLI workflows, and product operations.', 'Rustzen 面向本地开发、效率工具、CLI 工作流和产品运营的产品。')}
   active="Products"
   locale={locale}
 >
   <main class="page">
     <header class="page-head">
-      <p class="eyebrow">Rustzen</p>
-      <h1>{pick(locale, 'Products built for practical developer work.', '为真实开发工作打造的产品。')}</h1>
-      <p class="sub">{pick(locale, 'Start with Zen Clear, a native macOS cleanup tool for reclaiming development disk space safely.', '从 Zen Clear 开始：一个原生 macOS 清理工具，帮助你安全找回开发数据占用的空间。')}</p>
+      <p class="eyebrow">Rustzen Products</p>
+      <h1>{pick(locale, 'A focused toolkit for local-first workflows.', '一组聚焦本地优先工作流的工具。')}</h1>
+      <p class="sub">
+        {pick(
+          locale,
+          'Rustzen products start from concrete workflow pain: reclaiming dev disk space, reusing local snippets, packaging releases, and operating the services behind the tools.',
+          'Rustzen 产品从具体工作流问题出发：找回开发磁盘空间、复用本地片段、打包发布，以及运营工具背后的服务能力。'
+        )}
+      </p>
     </header>
 
     <section class="product-grid" aria-label={pick(locale, 'Rustzen products', 'Rustzen 产品')}>
-      <article class="glass product-card">
-        <img src={product.image.src} alt={product.image.alt} />
-        <div>
-          <p class="eyebrow">{pick(locale, product.status, product.status)}</p>
-          <h2>{product.name}</h2>
-          <p>{pick(locale, product.description, product.descriptionZh)}</p>
-          <div class="actions">
-            <Button href="/products/clear" variant="primary">{pick(locale, 'View product', '查看产品')}</Button>
-            <Button href="/download" variant="secondary">{pick(locale, 'Download', '下载')}</Button>
+      {products.map((item) => (
+        <article class="glass product-card">
+          <div class="card-head">
+            <p class="status">{pick(locale, item.status, item.statusZh)}</p>
+            <h2>{pick(locale, item.name, item.nameZh)}</h2>
           </div>
-        </div>
-      </article>
+          <p>{pick(locale, item.summary, item.summaryZh)}</p>
+          <p class="fit">{pick(locale, item.fit, item.fitZh)}</p>
+          <div class="actions">
+            <Button href={item.href} variant={item.slug === 'clear' ? 'primary' : 'secondary'} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
+              {pick(locale, item.slug === 'console' ? 'Open console' : 'View product', item.slug === 'console' ? '进入控制台' : '查看产品')}
+            </Button>
+            {item.downloadHref ? (
+              <Button href={item.downloadHref} variant="secondary">
+                {pick(locale, 'Download', '下载')}
+              </Button>
+            ) : null}
+          </div>
+          <div class="links">
+            <a href={item.githubHref} target="_blank" rel="noreferrer">GitHub</a>
+            <a href={item.docsHref}>{pick(locale, 'Docs', '文档')}</a>
+          </div>
+        </article>
+      ))}
+    </section>
+
+    <section class="source glass-2">
+      <div>
+        <p class="eyebrow">{pick(locale, 'Open source', '开源')}</p>
+        <h2>{pick(locale, 'Follow Rustzen on GitHub.', '在 GitHub 上关注 Rustzen。')}</h2>
+      </div>
+      <Button href={githubUrl} variant="primary" target="_blank" rel="noreferrer">GitHub</Button>
     </section>
   </main>
 </SiteLayout>
 
 <style>
   .page {
-    max-width: 1120px;
+    max-width: 1180px;
     margin: 0 auto;
     padding: clamp(48px, 7vw, 96px) clamp(20px, 5vw, 72px);
   }
+
   .page-head {
-    max-width: 720px;
+    max-width: 820px;
     margin-bottom: 36px;
   }
-  .page-head h1 {
+
+  .page-head h1,
+  .source h2 {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    line-height: 1.04;
     color: var(--ink);
+    letter-spacing: 0;
   }
+
+  .page-head h1 {
+    font-size: clamp(2.3rem, 5vw, 4rem);
+    line-height: 1.04;
+  }
+
   .sub,
   .product-card p {
     color: var(--ink-2);
   }
-  .product-card {
+
+  .product-grid {
     display: grid;
-    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1fr);
-    gap: clamp(24px, 5vw, 56px);
-    align-items: center;
-    padding: clamp(24px, 4vw, 42px);
-    border-radius: var(--radius-xl);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
   }
-  .product-card img {
-    width: 100%;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--glass-2-border);
+
+  .product-card {
+    display: flex;
+    min-height: 360px;
+    flex-direction: column;
+    padding: clamp(24px, 4vw, 34px);
   }
+
+  .card-head {
+    margin-bottom: 14px;
+  }
+
+  .status {
+    margin: 0 0 10px !important;
+    color: var(--brand-600) !important;
+    font-family: var(--font-mono);
+    font-size: 0.78rem !important;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   .product-card h2 {
     margin: 0;
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-size: clamp(1.7rem, 3.5vw, 2.4rem);
     color: var(--ink);
   }
+
+  .fit {
+    margin-top: 0;
+  }
+
   .actions {
     display: flex;
-    gap: 12px;
     flex-wrap: wrap;
-    margin-top: 24px;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 24px;
   }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  .links a {
+    color: var(--brand-600);
+    font-weight: 700;
+  }
+
+  .source {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: 22px;
+    padding: clamp(24px, 4vw, 34px);
+  }
+
+  .source h2 {
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+  }
+
   @media (max-width: 820px) {
-    .product-card {
+    .product-grid,
+    .source {
       grid-template-columns: 1fr;
+    }
+    .product-grid {
+      display: grid;
+    }
+    .source {
+      display: block;
+    }
+    .source :global(.button) {
+      margin-top: 18px;
     }
   }
 </style>

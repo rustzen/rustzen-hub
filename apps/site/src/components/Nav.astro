@@ -1,5 +1,5 @@
 ---
-import { product } from '../data/product';
+import { githubUrl } from '../data/product';
 import { altPath, localeHref, otherLocale, pick, type Locale } from '../i18n';
 
 interface Props {
@@ -12,7 +12,6 @@ const pathname = Astro.url.pathname;
 
 const items = [
   { slug: 'products', en: 'Products', zh: '产品' },
-  { slug: 'download', en: 'Download', zh: '下载' },
   { slug: 'docs', en: 'Docs', zh: '文档' },
   { slug: 'about', en: 'About', zh: '关于' },
 ];
@@ -30,11 +29,11 @@ const switchLabel = other === 'zh' ? '中文' : 'EN';
 ---
 
 <header class="site-header">
-  <a href={localeHref(locale, '')} class="brand" aria-label="Zen Clear home">
+  <a href={localeHref(locale, '')} class="brand" aria-label="Rustzen home">
     <img class="brand-mark" src="/rustzen-mark.svg" alt="" width="32" height="32" />
     <span class="brand-text">
-      <span class="brand-word">Zen Clear</span>
-      <span class="brand-by">{pick(locale, 'by Rustzen', 'Rustzen 出品')}</span>
+      <span class="brand-word">Rustzen</span>
+      <span class="brand-by">{pick(locale, 'Local-first tools', '本地优先工具')}</span>
     </span>
   </a>
 
@@ -86,11 +85,11 @@ const switchLabel = other === 'zh' ? '中文' : 'EN';
       </svg>
     </button>
 
-    <a class="nav-cta" href={product.download.href}>
+    <a class="nav-cta" href={githubUrl} target="_blank" rel="noreferrer">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M9 19c-4 1.3-4-2-5-2m10 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6A4.7 4.7 0 0 0 17.7 7c.1-.4.5-1.8-.2-3.5 0 0-1-.3-3.5 1.3a12 12 0 0 0-6 0C5.5 3.2 4.5 3.5 4.5 3.5 3.8 5.2 4.2 6.6 4.3 7A4.7 4.7 0 0 0 3 10.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
-      <span>{pick(locale, 'Download', '下载')}</span>
+      <span>GitHub</span>
     </a>
   </nav>
 </header>
