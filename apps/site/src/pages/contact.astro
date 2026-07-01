@@ -1,0 +1,52 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getLocale, pick, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+---
+
+<SiteLayout
+  title={pick(locale, 'Contact | Rustzen', '联系我们 | Rustzen')}
+  description={pick(
+    locale,
+    'Contact Rustzen support for Zen Clear questions, billing, refunds, and license help.',
+    '联系 Rustzen 支持：Zen Clear 相关问题、账单、退款与许可证帮助。',
+  )}
+  locale={locale}
+>
+  <main class="legal-page">
+    <article class="legal-document">
+      <p class="eyebrow">{pick(locale, 'Contact', '联系我们')}</p>
+      <h1>{pick(locale, 'Contact Rustzen', '联系 Rustzen')}</h1>
+      <p>
+        {pick(
+          locale,
+          'For Zen Clear support, billing questions, refund requests, license activation issues, or privacy requests, email',
+          '如需 Zen Clear 支持、账单问题、退款申请、许可证激活问题或隐私请求，请邮件联系',
+        )}
+        <a href="mailto:support@rustzen.dev">support@rustzen.dev</a>.
+      </p>
+
+      <h2>{pick(locale, 'What To Include', '请提供以下信息')}</h2>
+      <p>
+        {pick(
+          locale,
+          'For license or billing requests, include the email used at checkout, your Creem order or subscription reference if available, your app version, and a short description of the issue.',
+          '关于许可证或账单的请求，请附上结账时使用的邮箱、Creem 订单或订阅号（如有）、应用版本，以及问题的简要描述。',
+        )}
+      </p>
+
+      <h2>{pick(locale, 'Product', '产品')}</h2>
+      <p>
+        {pick(
+          locale,
+          'Zen Clear is a native macOS cleanup app for developer, AI, container, and system caches. Scan, preview, macOS permission setup, and updates are free. Zen Clear Pro is the annual $10/year subscription for cleanup, Restore Center, scan rules, scheduled scans, and activation on up to three devices.',
+          'Zen Clear 是一款原生 macOS 清理应用，面向开发者、AI、容器与系统缓存。扫描、预览、macOS 权限设置与更新免费。Zen Clear Pro 为 10 美元/年的订阅，提供清理、恢复中心、扫描规则、定时扫描，并最多支持三台设备激活。',
+        )}
+      </p>
+    </article>
+  </main>
+</SiteLayout>

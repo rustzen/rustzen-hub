@@ -1,0 +1,46 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Button from '../components/Button.astro';
+import { getLocale, pick, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+---
+
+<SiteLayout
+  title={pick(locale, 'About — Rustzen', '关于 — Rustzen')}
+  description={pick(locale, 'Rustzen builds focused tools for local developer workflows.', 'Rustzen 为本地开发者工作流打造专注工具。')}
+  active="About"
+  locale={locale}
+>
+  <main class="page">
+    <header>
+      <p class="eyebrow">Rustzen</p>
+      <h1>{pick(locale, 'Focused tools for local developer workflows.', '面向本地开发者工作流的专注工具。')}</h1>
+      <p class="lead">{pick(locale, 'Rustzen keeps product code, website, console, desktop tools, and CLI tools under one clear product brand.', 'Rustzen 将产品代码、官网、控制台、桌面工具和 CLI 工具放在清晰的产品品牌边界内。')}</p>
+      <Button href="/products" variant="primary">{pick(locale, 'Explore products', '查看产品')}</Button>
+    </header>
+  </main>
+</SiteLayout>
+
+<style>
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: clamp(56px, 9vw, 120px) clamp(20px, 5vw, 72px);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.02;
+    color: var(--ink);
+  }
+  .lead {
+    margin: 20px 0 28px;
+    color: var(--ink-2);
+    font-size: 1.12rem;
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Button from '../components/Button.astro';
+import { getLocale, pick, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+---
+
+<SiteLayout title={pick(locale, 'Page not found | Rustzen', '页面未找到 | Rustzen')} description={pick(locale, 'The page you were looking for could not be found.', '您访问的页面不存在。')} locale={locale}>
+  <main class="not-found">
+    <section class="glass inner">
+      <p class="code">404</p>
+      <h1>{pick(locale, 'This page drifted into the cache.', '这个页面好像被清理掉了。')}</h1>
+      <p class="sub">{pick(locale, "The page you were looking for doesn't exist or has moved. Let's get you back to clean disk space.", '您访问的页面不存在或已移动。带你回到找回磁盘空间。')}</p>
+      <div class="actions">
+        <Button variant="primary" href={locale === 'zh' ? '/zh' : '/'}>{pick(locale, 'Back to home', '返回首页')}</Button>
+        <Button variant="secondary" href={locale === 'zh' ? '/zh/help' : '/help'}>{pick(locale, 'Help & FAQ', '帮助与 FAQ')}</Button>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
+
+<style>
+  .not-found {
+    display: grid;
+    place-items: center;
+    min-height: calc(100svh - 160px);
+    padding: clamp(40px, 8vw, 96px) clamp(20px, 5vw, 72px);
+  }
+  .inner {
+    max-width: 560px;
+    text-align: center;
+    padding: clamp(36px, 6vw, 64px);
+    border-radius: var(--radius-xl);
+  }
+  .code {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 14vw, 8rem);
+    line-height: 1;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--brand-600), var(--brand-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  h1 {
+    margin: 12px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    color: var(--ink);
+  }
+  .sub {
+    margin: 14px 0 26px;
+    color: var(--ink-2);
+  }
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

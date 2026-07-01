@@ -1,0 +1,14 @@
+{
+  "name": "rustzen-hub",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "lint": "pnpm --filter @rustzen/console lint",
+    "dev:site": "pnpm --filter @rustzen/site dev",
+    "dev:console": "pnpm --filter @rustzen/console dev",
+    "build:site": "pnpm --filter @rustzen/site build",
+    "build:console": "pnpm --filter @rustzen/console build"
+  }
+}

@@ -1,0 +1,83 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Checkout Complete | Rustzen"
+  description="Your Rustzen checkout has completed."
+>
+  <main class="checkout-success">
+    <section>
+      <p class="eyebrow">Checkout complete</p>
+      <h1>Activate Zen Clear Pro.</h1>
+      <p>
+        Zen Clear will open the authorization page. If Creem returned a license key, it will be
+        filled in automatically.
+      </p>
+      <div class="actions">
+        <a id="open-zen-clear" class="button primary" href="zenclear://license">
+          Open Zen Clear
+        </a>
+        <a class="button secondary" href="/">Back to product</a>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const licenseKey = params.get("license_key") ?? params.get("key") ?? "";
+  const appUrl = new URL("zenclear://license");
+  if (licenseKey.trim()) {
+    appUrl.searchParams.set("key", licenseKey.trim());
+  }
+
+  const openZenClear = document.querySelector<HTMLAnchorElement>("#open-zen-clear");
+  if (openZenClear) {
+    openZenClear.href = appUrl.toString();
+    window.setTimeout(() => {
+      window.location.href = appUrl.toString();
+    }, 500);
+  }
+</script>
+
+<style>
+  .checkout-success {
+    min-height: calc(100svh - 67px);
+    display: grid;
+    place-items: center;
+    padding: clamp(54px, 9vw, 128px) clamp(20px, 5vw, 72px);
+    background: linear-gradient(135deg, #ffffff 0%, var(--clear-panel) 58%, var(--paper) 100%);
+  }
+
+  .checkout-success section {
+    max-width: 760px;
+    text-align: left;
+  }
+
+  .checkout-success h1 {
+    margin: 0;
+    color: var(--charcoal);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  .checkout-success p:not(.eyebrow) {
+    margin: 26px 0 30px;
+    color: var(--muted);
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .button.secondary {
+    background: #ffffff;
+    color: var(--charcoal);
+    border: 1px solid var(--line);
+  }
+</style>

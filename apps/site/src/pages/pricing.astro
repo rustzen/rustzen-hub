@@ -1,0 +1,152 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Button from '../components/Button.astro';
+import { product } from '../data/product';
+import { getLocale, pick, type Locale } from '../i18n';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+---
+
+<SiteLayout
+  title={pick(locale, 'Pricing — Zen Clear | Rustzen', '价格 — Zen Clear | Rustzen')}
+  description={pick(
+    locale,
+    'Zen Clear is free to scan, preview, grant macOS permissions, and receive updates. Pro is $10/year for cleanup, Zen Clear Restore Center, scan rules, scheduled scans, and up to 3 devices.',
+    'Zen Clear 扫描、预览、macOS 权限设置与更新永久免费。Pro 为 10 美元/年，含清理、Zen Clear 恢复中心、扫描规则、定时扫描，最多 3 台设备。',
+  )}
+  active="Pricing"
+  locale={locale}
+>
+  <main class="page">
+    <header class="page-head">
+      <p class="eyebrow">{pick(locale, 'Pricing', '价格')}</p>
+      <h1>{pick(locale, product.pricingTitle, product.pricingTitleZh)}</h1>
+      <p class="sub">{pick(locale, 'Free to scan, preview, manage permissions, and update forever. Pro unlocks cleanup, Zen Clear Restore Center, scan rules, scheduled scans, and up to 3 devices.', '永久免费扫描、预览、管理权限和更新；Pro 解锁清理、Zen Clear 恢复中心、扫描规则、定时扫描与最多 3 台设备。')}</p>
+    </header>
+
+    <div class="plans">
+      {product.pricing.map((plan) => (
+        <article class:list={['glass', 'plan', { featured: plan.featured }]}>
+          <header>
+            <h2>{pick(locale, plan.name, plan.nameZh)}</h2>
+            <p class="tagline">{pick(locale, plan.tagline, plan.taglineZh)}</p>
+          </header>
+          <p class="price"><span>{plan.price}</span><small>{pick(locale, plan.per ?? '/forever', plan.perZh ?? '/永久')}</small></p>
+          <ul>
+            {plan.features.map((feat, i) => (
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>{pick(locale, feat, plan.featuresZh[i])}</span>
+              </li>
+            ))}
+          </ul>
+          <Button variant={plan.featured ? 'primary' : 'secondary'} href={plan.href}>{pick(locale, plan.cta, plan.ctaZh)}</Button>
+        </article>
+      ))}
+    </div>
+
+    <section class="billing-note glass-2">
+      <p>{pick(locale, 'Pro is billed annually via Creem. Renew or cancel anytime. Education and open-source discounts available — email support@rustzen.dev.', 'Pro 通过 Creem 按年计费，可随时续订或取消。提供教育与开源折扣——请联系 support@rustzen.dev。')}</p>
+    </section>
+  </main>
+</SiteLayout>
+
+<style>
+  .page {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(48px, 7vw, 92px) clamp(20px, 5vw, 72px);
+  }
+  .page-head {
+    max-width: 640px;
+    margin-bottom: 40px;
+  }
+  .page-head h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .page-head .sub {
+    margin: 16px 0 0;
+    color: var(--ink-2);
+    font-size: 1.1rem;
+  }
+  .plans {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .plan {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+  }
+  .plan.featured {
+    border-color: color-mix(in srgb, var(--brand-400) 55%, transparent);
+    box-shadow: 0 30px 70px rgba(63, 127, 217, 0.18);
+  }
+  .plan header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--ink);
+  }
+  .plan .tagline {
+    margin: 6px 0 0;
+    color: var(--ink-3);
+    font-size: 0.96rem;
+  }
+  .plan .price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 22px 0;
+    color: var(--ink);
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .plan .price small {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+  .plan ul {
+    flex: 1;
+    display: grid;
+    gap: 10px;
+    margin: 0 0 26px;
+    padding: 0;
+    list-style: none;
+  }
+  .plan li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--ink-2);
+    font-size: 0.98rem;
+  }
+  .plan li svg {
+    color: var(--brand-600);
+    flex: 0 0 auto;
+  }
+  .billing-note {
+    margin-top: 28px;
+    padding: 22px 26px;
+    border-radius: var(--radius);
+  }
+  .billing-note p {
+    margin: 0;
+    color: var(--ink-2);
+  }
+  @media (max-width: 760px) {
+    .plans {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
