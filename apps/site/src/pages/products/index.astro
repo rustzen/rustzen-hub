@@ -1,36 +1,40 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Button from '../../components/Button.astro';
-import { githubUrl, products } from '../../data/product';
+import { githubUrl, publicProducts } from '../../data/product';
 import { getLocale, pick, type Locale } from '../../i18n';
 
 interface Props {
   locale?: Locale;
 }
 const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+
+function localizeProductHref(href: string) {
+  return locale === 'zh' && href.startsWith('/') ? `/zh${href}` : href;
+}
 ---
 
 <SiteLayout
-  title={pick(locale, 'Products — Rustzen', '产品 — Rustzen')}
-  description={pick(locale, 'Rustzen products for local development, productivity, CLI workflows, and product operations.', 'Rustzen 面向本地开发、效率工具、CLI 工作流和产品运营的产品。')}
-  active="Products"
+  title={pick(locale, 'Product — Rustzen', '产品 — Rustzen')}
+  description={pick(locale, 'Private Rustzen product surface. The public product page currently shows Clear only.', 'Rustzen 私有产品展示面；当前公开产品页仅显示 Clear。')}
+  active="Product"
   locale={locale}
 >
   <main class="page">
     <header class="page-head">
-      <p class="eyebrow">Rustzen Products</p>
-      <h1>{pick(locale, 'A focused toolkit for local-first workflows.', '一组聚焦本地优先工作流的工具。')}</h1>
+      <p class="eyebrow">Rustzen Product</p>
+      <h1>{pick(locale, 'Private products, shown deliberately.', '私有产品，谨慎公开展示。')}</h1>
       <p class="sub">
         {pick(
           locale,
-          'Rustzen products start from concrete workflow pain: reclaiming dev disk space, reusing local snippets, packaging releases, and operating the services behind the tools.',
-          'Rustzen 产品从具体工作流问题出发：找回开发磁盘空间、复用本地片段、打包发布，以及运营工具背后的服务能力。'
+          'This page is for commercial product surfaces, not the open-source project index. It currently lists Rustzen Clear only.',
+          '这里展示商业产品，而不是开源项目索引。当前仅列出 Rustzen Clear。'
         )}
       </p>
     </header>
 
     <section class="product-grid" aria-label={pick(locale, 'Rustzen products', 'Rustzen 产品')}>
-      {products.map((item) => (
+      {publicProducts.map((item) => (
         <article class="glass product-card">
           <div class="card-head">
             <p class="status">{pick(locale, item.status, item.statusZh)}</p>
@@ -39,18 +43,13 @@ const { locale = getLocale(Astro.url.pathname) } = Astro.props;
           <p>{pick(locale, item.summary, item.summaryZh)}</p>
           <p class="fit">{pick(locale, item.fit, item.fitZh)}</p>
           <div class="actions">
-            <Button href={item.href} variant={item.slug === 'clear' ? 'primary' : 'secondary'} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
-              {pick(locale, item.slug === 'console' ? 'Open console' : 'View product', item.slug === 'console' ? '进入控制台' : '查看产品')}
+            <Button href={localizeProductHref(item.href)} variant="primary" target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
+              {pick(locale, 'View product', '查看产品')}
             </Button>
-            {item.downloadHref ? (
-              <Button href={item.downloadHref} variant="secondary">
-                {pick(locale, 'Download', '下载')}
-              </Button>
-            ) : null}
           </div>
           <div class="links">
             <a href={item.githubHref} target="_blank" rel="noreferrer">GitHub</a>
-            <a href={item.docsHref}>{pick(locale, 'Docs', '文档')}</a>
+            <a href={localizeProductHref(item.docsHref)}>{pick(locale, 'Docs', '文档')}</a>
           </div>
         </article>
       ))}

@@ -7,8 +7,6 @@ const MIRRORED = new Set([
   '',
   'products',
   'products/clear',
-  'products/clipboard',
-  'products/zipper',
   'docs',
   'about',
   'pricing',

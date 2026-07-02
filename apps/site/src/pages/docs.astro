@@ -1,6 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Button from '../components/Button.astro';
+import { githubUrl } from '../data/product';
 import { getLocale, pick, type Locale } from '../i18n';
 
 interface Props {
@@ -9,29 +10,61 @@ interface Props {
 const { locale = getLocale(Astro.url.pathname) } = Astro.props;
 
 const links = [
-  { href: '/products/clear', label: 'Rustzen Clear', labelZh: 'Rustzen Clear', body: 'Product overview, safety model, and download path.', bodyZh: '产品概览、安全模型和下载入口。' },
-  { href: '/help', label: 'Help & FAQ', labelZh: '帮助与 FAQ', body: 'Safety, billing, support, and compatibility answers.', bodyZh: '安全性、计费、支持和兼容性说明。' },
-  { href: '/privacy', label: 'Privacy', labelZh: '隐私政策', body: 'How Rustzen product pages and apps handle data.', bodyZh: 'Rustzen 产品页面和应用如何处理数据。' },
+  {
+    href: githubUrl,
+    external: true,
+    label: 'Open-source work',
+    labelZh: '开源工作',
+    body: 'Start with Rustzen repositories that are already public and actively moving.',
+    bodyZh: '优先查看已经公开并正在推进的 Rustzen 仓库。',
+  },
+  {
+    href: '/products/clear',
+    label: 'Rustzen Clear',
+    labelZh: 'Rustzen Clear',
+    body: 'Current private product page: overview, safety model, pricing, and support path.',
+    bodyZh: '当前私有产品页：产品概览、安全模型、价格和支持入口。',
+  },
+  {
+    href: '/help',
+    label: 'Help & FAQ',
+    labelZh: '帮助与 FAQ',
+    body: 'Safety, billing, support, compatibility, and product boundary answers.',
+    bodyZh: '安全性、计费、支持、兼容性和产品边界说明。',
+  },
+  {
+    href: '/privacy',
+    label: 'Policies',
+    labelZh: '政策',
+    body: 'Privacy, terms, refunds, and contact information for public product usage.',
+    bodyZh: '公开产品使用相关的隐私、条款、退款和联系信息。',
+  },
 ];
+
+function localizeHref(href: string) {
+  const mirrored = new Set(['/products/clear', '/help']);
+  return locale === 'zh' && mirrored.has(href) ? `/zh${href}` : href;
+}
 ---
 
 <SiteLayout
   title={pick(locale, 'Docs — Rustzen', '文档 — Rustzen')}
-  description={pick(locale, 'Documentation entry points for Rustzen products.', 'Rustzen 产品文档入口。')}
+  description={pick(locale, 'Documentation entry points for open Rustzen work and the current Clear product.', 'Rustzen 开源工作和当前 Clear 产品的文档入口。')}
   active="Docs"
   locale={locale}
 >
   <main class="page">
     <header class="page-head">
       <p class="eyebrow">{pick(locale, 'Docs', '文档')}</p>
-      <h1>{pick(locale, 'Find the right Rustzen product documentation.', '找到 Rustzen 产品文档。')}</h1>
+      <h1>{pick(locale, 'Open work first, product docs second.', '开源工作优先，产品文档其次。')}</h1>
+      <p>{pick(locale, 'Docs should make it clear what is public, what is currently active, and what belongs to the private product surface.', '文档需要清楚区分哪些内容已公开、哪些正在推进，以及哪些属于私有产品展示。')}</p>
     </header>
     <section class="doc-grid">
       {links.map((link) => (
         <article class="glass doc-card">
           <h2>{pick(locale, link.label, link.labelZh)}</h2>
           <p>{pick(locale, link.body, link.bodyZh)}</p>
-          <Button href={link.href} variant="secondary">{pick(locale, 'Open', '打开')}</Button>
+          <Button href={localizeHref(link.href)} variant="secondary" target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>{pick(locale, 'Open', '打开')}</Button>
         </article>
       ))}
     </section>
@@ -52,9 +85,15 @@ const links = [
     line-height: 1.05;
     color: var(--ink);
   }
+  .page-head p:not(.eyebrow) {
+    max-width: 720px;
+    margin: 18px 0 0;
+    color: var(--ink-2);
+    font-size: 1.08rem;
+  }
   .doc-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
     margin-top: 36px;
   }

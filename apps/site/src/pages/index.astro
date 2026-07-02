@@ -1,13 +1,17 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Button from '../components/Button.astro';
-import { consoleUrl, docsUrl, githubUrl, products } from '../data/product';
+import { docsUrl, githubUrl, publicProducts } from '../data/product';
 import { getLocale, pick, type Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
 }
 const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+
+function localizeSiteHref(href: string) {
+  return locale === 'zh' && href.startsWith('/') ? `/zh${href}` : href;
+}
 
 const values = [
   {
@@ -38,25 +42,25 @@ const values = [
 
 const paths = [
   {
-    label: 'Console',
-    labelZh: '控制台',
-    href: consoleUrl,
-    body: 'Manage Rustzen releases, licenses, billing hooks, and product operations.',
-    bodyZh: '管理 Rustzen 发布、授权、计费回调和产品运营能力。',
+    label: 'GitHub',
+    labelZh: 'GitHub',
+    href: githubUrl,
+    body: 'Follow open-source Rustzen work, active repositories, releases, and engineering notes.',
+    bodyZh: '查看 Rustzen 已开源和正在推进的仓库、发布与工程记录。',
   },
   {
     label: 'Docs',
     labelZh: '文档',
     href: docsUrl,
-    body: 'Find product notes, setup guidance, and support entry points.',
-    bodyZh: '查看产品说明、配置指引和支持入口。',
+    body: 'Read entry points for open projects, current product notes, support, and policies.',
+    bodyZh: '查看开源项目入口、当前产品说明、支持信息和政策入口。',
   },
   {
-    label: 'GitHub',
-    labelZh: 'GitHub',
-    href: githubUrl,
-    body: 'Follow Rustzen source, releases, and product work in the open.',
-    bodyZh: '查看 Rustzen 的源码、发布和公开产品进展。',
+    label: 'Product',
+    labelZh: '产品',
+    href: '/products',
+    body: 'Private Rustzen products are listed separately. The public product page currently shows Clear only.',
+    bodyZh: '私有 Rustzen 产品单独展示；当前公开产品页仅显示 Clear。',
   },
 ];
 ---
@@ -64,6 +68,7 @@ const paths = [
 <SiteLayout
   title={pick(locale, 'Rustzen — Local-first tools for developers and makers', 'Rustzen — 面向开发者和创造者的本地优先工具')}
   description={pick(locale, 'Rustzen builds fast, local-first tools for modern developer workflows.', 'Rustzen 构建快速、本地优先的现代开发者工作流工具。')}
+  active="Home"
   locale={locale}
 >
   <main class="home">
@@ -79,14 +84,14 @@ const paths = [
           )}
         </p>
         <div class="actions">
-          <Button href={pick(locale, '/products', '/zh/products')} variant="primary">
-            {pick(locale, 'Explore products', '查看产品')}
-          </Button>
-          <Button href={githubUrl} variant="secondary" target="_blank" rel="noreferrer">
+          <Button href={githubUrl} variant="primary" target="_blank" rel="noreferrer">
             GitHub
           </Button>
-          <Button href={consoleUrl} variant="ghost" target="_blank" rel="noreferrer">
-            {pick(locale, 'Console', '控制台')}
+          <Button href={docsUrl} variant="secondary">
+            {pick(locale, 'Docs', '文档')}
+          </Button>
+          <Button href={pick(locale, '/products', '/zh/products')} variant="ghost">
+            {pick(locale, 'Product', '产品')}
           </Button>
         </div>
       </div>
@@ -110,22 +115,21 @@ const paths = [
     <section class="products" aria-labelledby="products-title">
       <div class="section-head split">
         <div>
-          <p class="eyebrow">{pick(locale, 'Products', '产品')}</p>
-          <h2 id="products-title">{pick(locale, 'Tools that solve specific workflow problems.', '解决具体工作流问题的工具。')}</h2>
+          <p class="eyebrow">{pick(locale, 'Product', '产品')}</p>
+          <h2 id="products-title">{pick(locale, 'Private products, shown deliberately.', '私有产品，谨慎公开展示。')}</h2>
         </div>
-        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'All products', '全部产品')}</a>
+        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'Product page', '产品页')}</a>
       </div>
       <div class="product-grid">
-        {products.map((item) => (
+        {publicProducts.map((item) => (
           <article class="glass product-card" data-accent={item.accent}>
             <p class="status">{pick(locale, item.status, item.statusZh)}</p>
             <h3>{pick(locale, item.name, item.nameZh)}</h3>
             <p>{pick(locale, item.summary, item.summaryZh)}</p>
             <div class="product-actions">
-              <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
-                {pick(locale, item.slug === 'console' ? 'Open console' : 'View product', item.slug === 'console' ? '进入控制台' : '查看产品')}
+              <a href={localizeSiteHref(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
+                {pick(locale, 'View product', '查看产品')}
               </a>
-              {item.downloadHref ? <a href={item.downloadHref}>{pick(locale, 'Download', '下载')}</a> : null}
             </div>
           </article>
         ))}
@@ -148,7 +152,7 @@ const paths = [
         </article>
         <article class="glass-2">
           <h3>{pick(locale, 'Keep the path open', '保持入口清晰')}</h3>
-          <p>{pick(locale, 'Use the product, read the docs, inspect the source, or enter the console from one brand home.', '从同一个品牌入口使用产品、阅读文档、查看源码或进入控制台。')}</p>
+          <p>{pick(locale, 'Use the product, read the docs, or inspect the source from one brand home.', '从同一个品牌入口使用产品、阅读文档或查看源码。')}</p>
         </article>
       </div>
     </section>
@@ -160,7 +164,7 @@ const paths = [
       </div>
       <div class="entry-grid">
         {paths.map((item) => (
-          <a class="glass entry-card" href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
+          <a class="glass entry-card" href={localizeSiteHref(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
             <span>{pick(locale, item.label, item.labelZh)}</span>
             <p>{pick(locale, item.body, item.bodyZh)}</p>
           </a>

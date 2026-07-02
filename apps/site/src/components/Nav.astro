@@ -11,9 +11,10 @@ const { active, locale = 'en' } = Astro.props;
 const pathname = Astro.url.pathname;
 
 const items = [
-  { slug: 'products', en: 'Products', zh: '产品' },
+  { slug: '', en: 'Home', zh: '首页' },
   { slug: 'docs', en: 'Docs', zh: '文档' },
   { slug: 'about', en: 'About', zh: '关于' },
+  { slug: 'products', en: 'Product', zh: '产品' },
 ];
 
 const policies = [

@@ -1,12 +1,40 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Button from '../components/Button.astro';
+import { githubUrl } from '../data/product';
 import { getLocale, pick, type Locale } from '../i18n';
 
 interface Props {
   locale?: Locale;
 }
 const { locale = getLocale(Astro.url.pathname) } = Astro.props;
+
+const pages = [
+  {
+    title: 'Home',
+    titleZh: '首页',
+    body: 'Brand overview, public direction, and entry points to active open-source work.',
+    bodyZh: '介绍品牌、公开方向，以及已经开源并正在推进的工作入口。',
+  },
+  {
+    title: 'Docs',
+    titleZh: '文档',
+    body: 'Open-source repository pointers, product notes, support answers, and policy entry points.',
+    bodyZh: '汇总开源仓库入口、产品说明、支持问题和政策入口。',
+  },
+  {
+    title: 'Product',
+    titleZh: '产品',
+    body: 'Private commercial products only. The public product surface currently shows Rustzen Clear.',
+    bodyZh: '仅展示私有商业产品；当前公开产品面只显示 Rustzen Clear。',
+  },
+  {
+    title: 'Policies',
+    titleZh: '政策',
+    body: 'Privacy, terms, refund, and contact information for the public site and product usage.',
+    bodyZh: '说明公开站点和产品使用相关的隐私、条款、退款和联系方式。',
+  },
+];
 ---
 
 <SiteLayout
@@ -19,15 +47,27 @@ const { locale = getLocale(Astro.url.pathname) } = Astro.props;
     <header>
       <p class="eyebrow">Rustzen</p>
       <h1>{pick(locale, 'Focused tools for local developer workflows.', '面向本地开发者工作流的专注工具。')}</h1>
-      <p class="lead">{pick(locale, 'Rustzen keeps product code, website, console, desktop tools, and CLI tools under one clear product brand.', 'Rustzen 将产品代码、官网、控制台、桌面工具和 CLI 工具放在清晰的产品品牌边界内。')}</p>
-      <Button href="/products" variant="primary">{pick(locale, 'Explore products', '查看产品')}</Button>
+      <p class="lead">{pick(locale, 'Rustzen keeps open-source work, public docs, private products, and policies under one clear brand boundary.', 'Rustzen 将开源工作、公开文档、私有产品和政策内容放在清晰的品牌边界内。')}</p>
+      <div class="actions">
+        <Button href={githubUrl} variant="primary" target="_blank" rel="noreferrer">GitHub</Button>
+        <Button href={pick(locale, '/products', '/zh/products')} variant="secondary">{pick(locale, 'Product', '产品')}</Button>
+      </div>
     </header>
+
+    <section class="page-map" aria-label={pick(locale, 'Page content map', '页面内容说明')}>
+      {pages.map((page) => (
+        <article class="glass">
+          <h2>{pick(locale, page.title, page.titleZh)}</h2>
+          <p>{pick(locale, page.body, page.bodyZh)}</p>
+        </article>
+      ))}
+    </section>
   </main>
 </SiteLayout>
 
 <style>
   .page {
-    max-width: 860px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: clamp(56px, 9vw, 120px) clamp(20px, 5vw, 72px);
   }
@@ -39,8 +79,36 @@ const { locale = getLocale(Astro.url.pathname) } = Astro.props;
     color: var(--ink);
   }
   .lead {
+    max-width: 760px;
     margin: 20px 0 28px;
     color: var(--ink-2);
     font-size: 1.12rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .page-map {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: clamp(42px, 7vw, 76px);
+  }
+  .page-map article {
+    padding: 26px;
+  }
+  .page-map h2 {
+    margin: 0;
+    color: var(--ink);
+  }
+  .page-map p {
+    margin: 12px 0 0;
+    color: var(--ink-2);
+  }
+  @media (max-width: 760px) {
+    .page-map {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
