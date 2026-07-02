@@ -1,7 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import Button from '../components/Button.astro';
-import { docsUrl, githubUrl, publicProducts } from '../data/product';
+import { githubUrl, publicProducts } from '../data/product';
 import { getLocale, pick, type Locale } from '../i18n';
 
 interface Props {
@@ -42,12 +41,28 @@ const values = [
 
 const openProjects = [
   {
+    name: 'rustzen-core',
+    href: 'https://github.com/rustzen/rustzen-core',
+    status: 'Shared Rust',
+    statusZh: '共享 Rust 基础',
+    body: 'Product-neutral Rust primitives and reusable crates shared across Rustzen products.',
+    bodyZh: '产品无关的 Rust 基础能力和可复用 crate，供 Rustzen 产品共享。',
+  },
+  {
     name: 'rustzen-admin',
     href: 'https://github.com/rustzen/rustzen-admin',
     status: 'A-class reference',
     statusZh: 'A 类参考实现',
     body: 'Web/Rust admin workspace with server, web app, shared crates, deployment flow, and root justfile.',
     bodyZh: 'Web/Rust 管理后台工作区，包含服务端、前端、共享 crate、部署流程和根 justfile。',
+  },
+  {
+    name: 'rustzen-zipper',
+    href: 'https://github.com/rustzen/rustzen-zipper',
+    status: 'CLI package',
+    statusZh: 'CLI 包',
+    body: 'Rust CLI and npm package for predictable zip archive creation in scripts and release workflows.',
+    bodyZh: 'Rust CLI 和 npm 包，用于脚本和发布流程中可预期地创建 zip 归档。',
   },
   {
     name: 'rustzen-analytics',
@@ -73,22 +88,6 @@ const openProjects = [
     body: 'Report service workspace with backend, web UI, deployment assets, and scheduled report flows.',
     bodyZh: '报表服务工作区，包含后端、Web UI、部署资源和定时报表流程。',
   },
-  {
-    name: 'rustzen-core',
-    href: 'https://github.com/rustzen/rustzen-core',
-    status: 'Shared Rust',
-    statusZh: '共享 Rust 基础',
-    body: 'Product-neutral Rust primitives and reusable crates shared across Rustzen products.',
-    bodyZh: '产品无关的 Rust 基础能力和可复用 crate，供 Rustzen 产品共享。',
-  },
-  {
-    name: 'rustzen-zipper',
-    href: 'https://github.com/rustzen/rustzen-zipper',
-    status: 'CLI package',
-    statusZh: 'CLI 包',
-    body: 'Rust CLI and npm package for predictable zip archive creation in scripts and release workflows.',
-    bodyZh: 'Rust CLI 和 npm 包，用于脚本和发布流程中可预期地创建 zip 归档。',
-  },
 ];
 ---
 
@@ -110,17 +109,6 @@ const openProjects = [
             'Rustzen 构建快速、实用的工具，服务于本地开发、桌面效率、发布工作流，以及支撑这些产品的云端能力。'
           )}
         </p>
-        <div class="actions">
-          <Button href={githubUrl} variant="primary" target="_blank" rel="noreferrer">
-            GitHub
-          </Button>
-          <Button href={docsUrl} variant="secondary">
-            {pick(locale, 'Docs', '文档')}
-          </Button>
-          <Button href={pick(locale, '/products', '/zh/products')} variant="ghost">
-            {pick(locale, 'Product', '产品')}
-          </Button>
-        </div>
       </div>
     </section>
 
@@ -158,30 +146,6 @@ const openProjects = [
       </div>
     </section>
 
-    <section class="products" aria-labelledby="products-title">
-      <div class="section-head split">
-        <div>
-          <p class="eyebrow">{pick(locale, 'Product', '产品')}</p>
-          <h2 id="products-title">{pick(locale, 'Private product surface: Clear.', '私有产品展示面：Clear。')}</h2>
-        </div>
-        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'Clear product page', 'Clear 产品页')}</a>
-      </div>
-      <div class="product-grid">
-        {publicProducts.map((item) => (
-          <article class="glass product-card" data-accent={item.accent}>
-            <p class="status">{pick(locale, item.status, item.statusZh)}</p>
-            <h3>{pick(locale, item.name, item.nameZh)}</h3>
-            <p>{pick(locale, item.summary, item.summaryZh)}</p>
-            <div class="product-actions">
-              <a href={localizeSiteHref(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
-                {pick(locale, 'View product', '查看产品')}
-              </a>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-
     <section class="why" aria-labelledby="why-title">
       <div class="section-head">
         <p class="eyebrow">{pick(locale, 'Why use Rustzen', '为什么使用 Rustzen')}</p>
@@ -203,6 +167,29 @@ const openProjects = [
       </div>
     </section>
 
+    <section class="products" aria-labelledby="products-title">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">{pick(locale, 'Product', '产品')}</p>
+          <h2 id="products-title">{pick(locale, 'Private products, shown deliberately.', '私有产品，谨慎公开展示。')}</h2>
+        </div>
+        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'Clear product page', 'Clear 产品页')}</a>
+      </div>
+      <div class="product-grid">
+        {publicProducts.map((item) => (
+          <article class="glass product-card" data-accent={item.accent}>
+            <p class="status">{pick(locale, item.status, item.statusZh)}</p>
+            <h3>{pick(locale, item.name, item.nameZh)}</h3>
+            <p>{pick(locale, item.summary, item.summaryZh)}</p>
+            <div class="product-actions">
+              <a href={localizeSiteHref(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
+                {pick(locale, 'View product', '查看产品')}
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   </main>
 </SiteLayout>
 
@@ -238,13 +225,6 @@ const openProjects = [
     font-size: clamp(1.05rem, 1.7vw, 1.24rem);
   }
 
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 30px;
-  }
-
   .values,
   .open-work,
   .products,
@@ -272,8 +252,7 @@ const openProjects = [
 
   .value-grid,
   .open-grid,
-  .product-grid,
-  .entry-grid {
+  .product-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 18px;
@@ -282,7 +261,6 @@ const openProjects = [
   .value-card,
   .open-card,
   .product-card,
-  .entry-card,
   .why-list article {
     padding: 26px;
   }
@@ -290,7 +268,6 @@ const openProjects = [
   .value-card h3,
   .open-card h3,
   .product-card h3,
-  .entry-card span,
   .why-list h3 {
     margin: 0;
     color: var(--ink);
@@ -300,7 +277,6 @@ const openProjects = [
   .value-card p,
   .open-card p,
   .product-card p,
-  .entry-card p,
   .why-list p {
     margin: 10px 0 0;
     color: var(--ink-2);
@@ -345,11 +321,6 @@ const openProjects = [
     gap: 18px;
   }
 
-  .entry-card {
-    display: block;
-  }
-
-  .entry-card:hover,
   .open-card:hover,
   .product-card:hover,
   .value-card:hover {
@@ -360,8 +331,7 @@ const openProjects = [
     .value-grid,
     .open-grid,
     .product-grid,
-    .why-list,
-    .entry-grid {
+    .why-list {
       grid-template-columns: 1fr 1fr;
     }
   }
@@ -370,8 +340,7 @@ const openProjects = [
     .value-grid,
     .open-grid,
     .product-grid,
-    .why-list,
-    .entry-grid {
+    .why-list {
       grid-template-columns: 1fr;
     }
     .section-head.split {
