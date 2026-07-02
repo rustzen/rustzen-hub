@@ -252,7 +252,7 @@ export const products = [
     name: 'Rustzen Clear',
     nameZh: 'Rustzen Clear',
     slug: 'clear',
-    href: '/products/clear',
+    href: '/products',
     status: 'Beta',
     statusZh: 'Beta',
     summary: 'A native macOS cleanup tool for developer cache, build output, AI tool state, and local residue.',
@@ -261,7 +261,7 @@ export const products = [
     fitZh: '适合经常被项目生成数据占满磁盘的开发者。',
     downloadHref: '',
     githubHref: 'https://github.com/rustzen/rustzen-clear',
-    docsHref: '/products/clear',
+    docsHref: '/products',
     accent: 'clear',
   },
 ] as const;

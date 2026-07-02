@@ -40,27 +40,54 @@ const values = [
   },
 ];
 
-const paths = [
+const openProjects = [
   {
-    label: 'GitHub',
-    labelZh: 'GitHub',
-    href: githubUrl,
-    body: 'Follow open-source Rustzen work, active repositories, releases, and engineering notes.',
-    bodyZh: '查看 Rustzen 已开源和正在推进的仓库、发布与工程记录。',
+    name: 'rustzen-admin',
+    href: 'https://github.com/rustzen/rustzen-admin',
+    status: 'A-class reference',
+    statusZh: 'A 类参考实现',
+    body: 'Web/Rust admin workspace with server, web app, shared crates, deployment flow, and root justfile.',
+    bodyZh: 'Web/Rust 管理后台工作区，包含服务端、前端、共享 crate、部署流程和根 justfile。',
   },
   {
-    label: 'Docs',
-    labelZh: '文档',
-    href: docsUrl,
-    body: 'Read entry points for open projects, current product notes, support, and policies.',
-    bodyZh: '查看开源项目入口、当前产品说明、支持信息和政策入口。',
+    name: 'rustzen-analytics',
+    href: 'https://github.com/rustzen/rustzen-analytics',
+    status: 'Analytics service',
+    statusZh: '分析服务',
+    body: 'Web/Rust analytics system for event ingestion, reporting, scheduling, and dashboard workflows.',
+    bodyZh: 'Web/Rust 分析系统，覆盖事件采集、报表、调度和看板工作流。',
   },
   {
-    label: 'Product',
-    labelZh: '产品',
-    href: '/products',
-    body: 'Private Rustzen products are listed separately. The public product page currently shows Clear only.',
-    bodyZh: '私有 Rustzen 产品单独展示；当前公开产品页仅显示 Clear。',
+    name: 'rustzen-inspect',
+    href: 'https://github.com/rustzen/rustzen-inspect',
+    status: 'Monitoring',
+    statusZh: '监控系统',
+    body: 'Multi-process monitoring platform with server, agent, shared core, and web frontend.',
+    bodyZh: '多进程监控平台，包含 server、agent、共享核心和 Web 前端。',
+  },
+  {
+    name: 'rustzen-report',
+    href: 'https://github.com/rustzen/rustzen-report',
+    status: 'Reports',
+    statusZh: '报表系统',
+    body: 'Report service workspace with backend, web UI, deployment assets, and scheduled report flows.',
+    bodyZh: '报表服务工作区，包含后端、Web UI、部署资源和定时报表流程。',
+  },
+  {
+    name: 'rustzen-core',
+    href: 'https://github.com/rustzen/rustzen-core',
+    status: 'Shared Rust',
+    statusZh: '共享 Rust 基础',
+    body: 'Product-neutral Rust primitives and reusable crates shared across Rustzen products.',
+    bodyZh: '产品无关的 Rust 基础能力和可复用 crate，供 Rustzen 产品共享。',
+  },
+  {
+    name: 'rustzen-zipper',
+    href: 'https://github.com/rustzen/rustzen-zipper',
+    status: 'CLI package',
+    statusZh: 'CLI 包',
+    body: 'Rust CLI and npm package for predictable zip archive creation in scripts and release workflows.',
+    bodyZh: 'Rust CLI 和 npm 包，用于脚本和发布流程中可预期地创建 zip 归档。',
   },
 ];
 ---
@@ -112,13 +139,32 @@ const paths = [
       </div>
     </section>
 
+    <section class="open-work" aria-labelledby="open-work-title">
+      <div class="section-head split">
+        <div>
+          <p class="eyebrow">{pick(locale, 'Open work', '开源工作')}</p>
+          <h2 id="open-work-title">{pick(locale, 'Active Rustzen repositories, named directly.', '正在推进的 Rustzen 仓库，直接说明。')}</h2>
+        </div>
+        <a class="text-link" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+      <div class="open-grid">
+        {openProjects.map((item) => (
+          <a class="glass open-card" href={item.href} target="_blank" rel="noreferrer">
+            <p class="status">{pick(locale, item.status, item.statusZh)}</p>
+            <h3>{item.name}</h3>
+            <p>{pick(locale, item.body, item.bodyZh)}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
     <section class="products" aria-labelledby="products-title">
       <div class="section-head split">
         <div>
           <p class="eyebrow">{pick(locale, 'Product', '产品')}</p>
-          <h2 id="products-title">{pick(locale, 'Private products, shown deliberately.', '私有产品，谨慎公开展示。')}</h2>
+          <h2 id="products-title">{pick(locale, 'Private product surface: Clear.', '私有产品展示面：Clear。')}</h2>
         </div>
-        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'Product page', '产品页')}</a>
+        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'Clear product page', 'Clear 产品页')}</a>
       </div>
       <div class="product-grid">
         {publicProducts.map((item) => (
@@ -157,20 +203,6 @@ const paths = [
       </div>
     </section>
 
-    <section class="entry" aria-labelledby="entry-title">
-      <div class="section-head">
-        <p class="eyebrow">{pick(locale, 'Next steps', '后续入口')}</p>
-        <h2 id="entry-title">{pick(locale, 'Go where the work is.', '直接进入需要的地方。')}</h2>
-      </div>
-      <div class="entry-grid">
-        {paths.map((item) => (
-          <a class="glass entry-card" href={localizeSiteHref(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
-            <span>{pick(locale, item.label, item.labelZh)}</span>
-            <p>{pick(locale, item.body, item.bodyZh)}</p>
-          </a>
-        ))}
-      </div>
-    </section>
   </main>
 </SiteLayout>
 
@@ -214,9 +246,9 @@ const paths = [
   }
 
   .values,
+  .open-work,
   .products,
-  .why,
-  .entry {
+  .why {
     padding: clamp(48px, 7vw, 92px) clamp(20px, 5vw, 72px);
   }
 
@@ -239,6 +271,7 @@ const paths = [
   }
 
   .value-grid,
+  .open-grid,
   .product-grid,
   .entry-grid {
     display: grid;
@@ -247,6 +280,7 @@ const paths = [
   }
 
   .value-card,
+  .open-card,
   .product-card,
   .entry-card,
   .why-list article {
@@ -254,6 +288,7 @@ const paths = [
   }
 
   .value-card h3,
+  .open-card h3,
   .product-card h3,
   .entry-card span,
   .why-list h3 {
@@ -263,6 +298,7 @@ const paths = [
   }
 
   .value-card p,
+  .open-card p,
   .product-card p,
   .entry-card p,
   .why-list p {
@@ -279,6 +315,15 @@ const paths = [
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .open-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .open-card {
+    display: block;
+    min-height: 210px;
   }
 
   .product-actions {
@@ -305,6 +350,7 @@ const paths = [
   }
 
   .entry-card:hover,
+  .open-card:hover,
   .product-card:hover,
   .value-card:hover {
     transform: translateY(-2px);
@@ -312,6 +358,7 @@ const paths = [
 
   @media (max-width: 980px) {
     .value-grid,
+    .open-grid,
     .product-grid,
     .why-list,
     .entry-grid {
@@ -321,6 +368,7 @@ const paths = [
 
   @media (max-width: 680px) {
     .value-grid,
+    .open-grid,
     .product-grid,
     .why-list,
     .entry-grid {
