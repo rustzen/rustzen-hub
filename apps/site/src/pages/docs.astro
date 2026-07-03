@@ -15,15 +15,15 @@ const links = [
     external: true,
     label: 'Open-source work',
     labelZh: '开源工作',
-    body: 'Start with Rustzen repositories that are already public and actively moving.',
-    bodyZh: '优先查看已经公开并正在推进的 Rustzen 仓库。',
+    body: 'Start with Rustzen repositories that are public, inspectable, and maintained.',
+    bodyZh: '优先查看公开、可检查并维护中的 Rustzen 仓库。',
   },
   {
     href: '/products/clear',
     label: 'Rustzen Clear',
     labelZh: 'Rustzen Clear',
-    body: 'Current private product page: overview, safety model, pricing, and support path.',
-    bodyZh: '当前私有产品页：产品概览、安全模型、价格和支持入口。',
+    body: 'Standalone app product page: overview, safety model, pricing, and support path.',
+    bodyZh: '独立 App 产品页：产品概览、安全模型、价格和支持入口。',
   },
   {
     href: '/help',
@@ -36,8 +36,8 @@ const links = [
     href: '/privacy',
     label: 'Policies',
     labelZh: '政策',
-    body: 'Privacy, terms, refunds, and contact information for public product usage.',
-    bodyZh: '公开产品使用相关的隐私、条款、退款和联系信息。',
+    body: 'Privacy, terms, refunds, and contact information for the public website and products.',
+    bodyZh: '公开网站和产品相关的隐私、条款、退款和联系信息。',
   },
 ];
 
@@ -49,15 +49,15 @@ function localizeHref(href: string) {
 
 <SiteLayout
   title={pick(locale, 'Docs — Rustzen', '文档 — Rustzen')}
-  description={pick(locale, 'Documentation entry points for open Rustzen work and the current Clear product.', 'Rustzen 开源工作和当前 Clear 产品的文档入口。')}
+  description={pick(locale, 'Documentation entry points for Rustzen open-source work and product content.', 'Rustzen 开源项目和产品内容的文档入口。')}
   active="Docs"
   locale={locale}
 >
   <main class="page">
     <header class="page-head">
       <p class="eyebrow">{pick(locale, 'Docs', '文档')}</p>
-      <h1>{pick(locale, 'Open work first, product docs second.', '开源工作优先，产品文档其次。')}</h1>
-      <p>{pick(locale, 'Docs should make it clear what is public, what is currently active, and what belongs to the private product surface.', '文档需要清楚区分哪些内容已公开、哪些正在推进，以及哪些属于私有产品展示。')}</p>
+      <h1>{pick(locale, 'Open work first, product docs separate', '开源工作优先，产品文档独立')}</h1>
+      <p>{pick(locale, 'Docs separate public repositories, engineering notes, product documentation, support, and policies so each boundary is easy to inspect.', '文档区分公开仓库、工程说明、产品文档、支持和政策，让每个边界都容易检查。')}</p>
     </header>
     <section class="doc-grid">
       {links.map((link) => (

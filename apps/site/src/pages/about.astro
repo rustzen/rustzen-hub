@@ -1,7 +1,5 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import Button from '../components/Button.astro';
-import { githubUrl } from '../data/product';
 import { getLocale, pick, type Locale } from '../i18n';
 
 interface Props {
@@ -13,20 +11,20 @@ const pages = [
   {
     title: 'Home',
     titleZh: '首页',
-    body: 'Brand overview, public direction, and entry points to active open-source work.',
-    bodyZh: '介绍品牌、公开方向，以及已经开源并正在推进的工作入口。',
+    body: 'Brand positioning and entry points for public, maintained open-source work.',
+    bodyZh: '说明品牌定位，并提供公开、维护中的开源项目入口。',
   },
   {
     title: 'Docs',
     titleZh: '文档',
-    body: 'Open-source repository pointers, product notes, support answers, and policy entry points.',
-    bodyZh: '汇总开源仓库入口、产品说明、支持问题和政策入口。',
+    body: 'Documentation entry points for repositories, engineering notes, product docs, support, and policies.',
+    bodyZh: '汇总仓库说明、工程约定、产品文档、支持问题和政策入口。',
   },
   {
     title: 'Product',
     titleZh: '产品',
-    body: 'Private commercial products only. The public product surface currently shows Rustzen Clear.',
-    bodyZh: '仅展示私有商业产品；当前公开产品面只显示 Rustzen Clear。',
+    body: 'Standalone app products live here. The current public product page shows Rustzen Clear.',
+    bodyZh: '独立 App 产品放在这里；当前公开产品页展示 Rustzen Clear。',
   },
   {
     title: 'Policies',
@@ -39,19 +37,15 @@ const pages = [
 
 <SiteLayout
   title={pick(locale, 'About — Rustzen', '关于 — Rustzen')}
-  description={pick(locale, 'Rustzen builds focused tools for local developer workflows.', 'Rustzen 为本地开发者工作流打造专注工具。')}
+  description={pick(locale, 'Rustzen maintains open-source components, templates, and tools for developer workflows.', 'Rustzen 维护面向开发者工作流的开源组件、工程模板和实用工具。')}
   active="About"
   locale={locale}
 >
   <main class="page">
     <header>
       <p class="eyebrow">Rustzen</p>
-      <h1>{pick(locale, 'Focused tools for local developer workflows.', '面向本地开发者工作流的专注工具。')}</h1>
-      <p class="lead">{pick(locale, 'Rustzen keeps open-source work, public docs, private products, and policies under one clear brand boundary.', 'Rustzen 将开源工作、公开文档、私有产品和政策内容放在清晰的品牌边界内。')}</p>
-      <div class="actions">
-        <Button href={githubUrl} variant="primary" target="_blank" rel="noreferrer">GitHub</Button>
-        <Button href={pick(locale, '/products', '/zh/products')} variant="secondary">{pick(locale, 'Product', '产品')}</Button>
-      </div>
+      <h1>{pick(locale, 'Open-source components, templates, and tools for developer workflows', '面向开发者工作流的开源组件、工程模板和实用工具')}</h1>
+      <p class="lead">{pick(locale, 'Rustzen focuses on reusable foundations, engineering templates, and practical tools rather than packaging every project as a platform. Product content is kept on the Product page.', 'Rustzen 优先维护可复用的基础组件、工程模板和实用工具，而不是把所有内容包装成平台。产品内容单独放在 Product 页面。')}</p>
     </header>
 
     <section class="page-map" aria-label={pick(locale, 'Page content map', '页面内容说明')}>
@@ -80,14 +74,9 @@ const pages = [
   }
   .lead {
     max-width: 760px;
-    margin: 20px 0 28px;
+    margin: 20px 0 0;
     color: var(--ink-2);
     font-size: 1.12rem;
-  }
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
   }
   .page-map {
     display: grid;

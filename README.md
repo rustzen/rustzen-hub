@@ -38,3 +38,8 @@ pnpm --filter @rustzen/console build
 - `apps/console` was migrated from `rustzen/rzen-platform`.
 - The old repositories should be treated as legacy sources after this monorepo is verified and pushed.
 - Generated/local-only directories such as `.vercel/`, `.next/`, `.astro/`, `dist/`, `out/`, and `node_modules/` are not source truth.
+
+## Ownership and Commercial Rights
+
+Ownership, branding, trademark, domain, hosted-service, package publishing, and
+commercial-use boundaries are documented in [NOTICE.md](./NOTICE.md).

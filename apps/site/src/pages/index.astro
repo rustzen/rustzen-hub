@@ -1,6 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { githubUrl, publicProducts } from '../data/product';
+import { githubUrl } from '../data/product';
 import { getLocale, pick, type Locale } from '../i18n';
 
 interface Props {
@@ -8,34 +8,30 @@ interface Props {
 }
 const { locale = getLocale(Astro.url.pathname) } = Astro.props;
 
-function localizeSiteHref(href: string) {
-  return locale === 'zh' && href.startsWith('/') ? `/zh${href}` : href;
-}
-
 const values = [
   {
     title: 'Local-first',
     titleZh: '本地优先',
-    body: 'Keep work data close to the machine unless a cloud service is genuinely needed.',
-    bodyZh: '默认让工作数据留在本机，只有确实需要时才使用云端能力。',
+    body: 'Prefer local data and local execution when the workflow does not need a remote service.',
+    bodyZh: '在工作流不需要远端服务时，优先把数据和执行留在本机。',
   },
   {
-    title: 'Fast by default',
-    titleZh: '默认高性能',
-    body: 'Use native apps, focused CLIs, and small workflows that feel immediate.',
-    bodyZh: '用原生应用、聚焦 CLI 和轻量工作流，让常用操作保持即时反馈。',
+    title: 'Small scope',
+    titleZh: '范围明确',
+    body: 'Keep each project focused on a clear engineering job instead of presenting everything as a platform.',
+    bodyZh: '让每个项目服务清楚的工程任务，而不是把所有内容包装成平台。',
   },
   {
-    title: 'Plain and reliable',
-    titleZh: '简洁可靠',
-    body: 'Prefer clear explanations, reversible actions, and predictable product behavior.',
-    bodyZh: '重视清晰解释、可恢复操作和可预期的产品行为。',
+    title: 'Readable behavior',
+    titleZh: '行为可理解',
+    body: 'Keep commands, documentation, and product boundaries easy to inspect and explain.',
+    bodyZh: '让命令、文档和产品边界尽量容易检查、理解和说明。',
   },
   {
-    title: 'AI-assisted',
-    titleZh: 'AI 辅助',
-    body: 'Use AI to help understand workflows, not to hide risky automation behind magic.',
-    bodyZh: '用 AI 帮助理解工作流，而不是把高风险自动化藏在黑盒里。',
+    title: 'Cautious AI',
+    titleZh: '谨慎使用 AI',
+    body: 'Use AI where it helps reading or operating workflows, with visible inputs and recoverable actions.',
+    bodyZh: '只在能帮助理解或操作工作流的地方使用 AI，并保留清晰输入和可回退动作。',
   },
 ];
 
@@ -43,57 +39,33 @@ const openProjects = [
   {
     name: 'rustzen-core',
     href: 'https://github.com/rustzen/rustzen-core',
-    status: 'Shared Rust',
-    statusZh: '共享 Rust 基础',
-    body: 'Product-neutral Rust primitives and reusable crates shared across Rustzen products.',
-    bodyZh: '产品无关的 Rust 基础能力和可复用 crate，供 Rustzen 产品共享。',
+    status: 'Shared Rust components',
+    statusZh: '共享 Rust 基础组件',
+    body: 'Shared Rust primitives and crates for common models, configuration, error handling, and engineering conventions.',
+    bodyZh: 'Rustzen 项目之间复用的 Rust 基础代码和 crate，用于沉淀通用模型、配置、错误处理和工程约定。',
   },
   {
     name: 'rustzen-admin',
     href: 'https://github.com/rustzen/rustzen-admin',
-    status: 'A-class reference',
-    statusZh: 'A 类参考实现',
-    body: 'Web/Rust admin workspace with server, web app, shared crates, deployment flow, and root justfile.',
-    bodyZh: 'Web/Rust 管理后台工作区，包含服务端、前端、共享 crate、部署流程和根 justfile。',
+    status: 'Web/Rust admin template',
+    statusZh: 'Web/Rust 后台工程模板',
+    body: 'A Web/Rust admin template with server, web app, shared crates, and deployment scripts.',
+    bodyZh: '一个 Web/Rust 后台工程模板，包含服务端、前端、共享 crate 和部署脚本，可作为后台系统、控制台和内部工具的工程起点。',
   },
   {
     name: 'rustzen-zipper',
     href: 'https://github.com/rustzen/rustzen-zipper',
-    status: 'CLI package',
-    statusZh: 'CLI 包',
-    body: 'Rust CLI and npm package for predictable zip archive creation in scripts and release workflows.',
-    bodyZh: 'Rust CLI 和 npm 包，用于脚本和发布流程中可预期地创建 zip 归档。',
-  },
-  {
-    name: 'rustzen-analytics',
-    href: 'https://github.com/rustzen/rustzen-analytics',
-    status: 'Analytics service',
-    statusZh: '分析服务',
-    body: 'Web/Rust analytics system for event ingestion, reporting, scheduling, and dashboard workflows.',
-    bodyZh: 'Web/Rust 分析系统，覆盖事件采集、报表、调度和看板工作流。',
-  },
-  {
-    name: 'rustzen-inspect',
-    href: 'https://github.com/rustzen/rustzen-inspect',
-    status: 'Monitoring',
-    statusZh: '监控系统',
-    body: 'Multi-process monitoring platform with server, agent, shared core, and web frontend.',
-    bodyZh: '多进程监控平台，包含 server、agent、共享核心和 Web 前端。',
-  },
-  {
-    name: 'rustzen-report',
-    href: 'https://github.com/rustzen/rustzen-report',
-    status: 'Reports',
-    statusZh: '报表系统',
-    body: 'Report service workspace with backend, web UI, deployment assets, and scheduled report flows.',
-    bodyZh: '报表服务工作区，包含后端、Web UI、部署资源和定时报表流程。',
+    status: 'Release packaging tool',
+    statusZh: '发布打包工具',
+    body: 'A release packaging utility for creating repeatable zip archives in scripts and release flows.',
+    bodyZh: '用于脚本和发布流程的 zip 打包工具，适合构建可重复、可自动化的发布归档。',
   },
 ];
 ---
 
 <SiteLayout
-  title={pick(locale, 'Rustzen — Local-first tools for developers and makers', 'Rustzen — 面向开发者和创造者的本地优先工具')}
-  description={pick(locale, 'Rustzen builds fast, local-first tools for modern developer workflows.', 'Rustzen 构建快速、本地优先的现代开发者工作流工具。')}
+  title={pick(locale, 'Rustzen — Open-source components, templates, and tools', 'Rustzen — 开源组件、工程模板和工具')}
+  description={pick(locale, 'Rustzen maintains open-source components, templates, and tools for developer workflows.', 'Rustzen 维护面向开发者工作流的开源组件、工程模板和实用工具。')}
   active="Home"
   locale={locale}
 >
@@ -101,12 +73,12 @@ const openProjects = [
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">Rustzen</p>
-        <h1>{pick(locale, 'Local-first tools for developers and makers.', '面向开发者和创造者的本地优先工具。')}</h1>
+        <h1>{pick(locale, 'Open-source components, templates, and tools for developer workflows', 'Rustzen 的开源组件、工程模板和工具')}</h1>
         <p class="lead">
           {pick(
             locale,
-            'Rustzen builds fast, practical tools for local development, desktop productivity, release workflows, and the services that support them.',
-            'Rustzen 构建快速、实用的工具，服务于本地开发、桌面效率、发布工作流，以及支撑这些产品的云端能力。'
+            'Rustzen maintains open-source projects for developer workflows: shared Rust components, Web/Rust admin templates, and practical tools for release workflows. Standalone app products are kept on separate product pages.',
+            'Rustzen 维护面向开发者工作流的公开项目：共享 Rust 基础组件、Web/Rust 后台工程模板，以及用于发布流程的实用工具。独立 App 产品单独放在产品页。'
           )}
         </p>
       </div>
@@ -114,8 +86,8 @@ const openProjects = [
 
     <section class="values" aria-labelledby="values-title">
       <div class="section-head">
-        <p class="eyebrow">{pick(locale, 'What Rustzen is', 'Rustzen 是什么')}</p>
-        <h2 id="values-title">{pick(locale, 'A focused product line for modern local work.', '一组聚焦现代本地工作的产品线。')}</h2>
+        <p class="eyebrow">{pick(locale, 'How we work', '工作方式')}</p>
+        <h2 id="values-title">{pick(locale, 'Clear scope, local-first where practical, and inspectable behavior', '边界清晰、适合时本地优先、行为可检查')}</h2>
       </div>
       <div class="value-grid">
         {values.map((item) => (
@@ -131,7 +103,7 @@ const openProjects = [
       <div class="section-head split">
         <div>
           <p class="eyebrow">{pick(locale, 'Open work', '开源工作')}</p>
-          <h2 id="open-work-title">{pick(locale, 'Active Rustzen repositories, named directly.', '正在推进的 Rustzen 仓库，直接说明。')}</h2>
+          <h2 id="open-work-title">{pick(locale, 'Public repositories currently maintained', '当前公开并维护中的项目')}</h2>
         </div>
         <a class="text-link" href={githubUrl} target="_blank" rel="noreferrer">GitHub</a>
       </div>
@@ -148,46 +120,22 @@ const openProjects = [
 
     <section class="why" aria-labelledby="why-title">
       <div class="section-head">
-        <p class="eyebrow">{pick(locale, 'Why use Rustzen', '为什么使用 Rustzen')}</p>
-        <h2 id="why-title">{pick(locale, 'Designed for people who live in real workflows.', '为真实工作流中的用户设计。')}</h2>
+        <p class="eyebrow">{pick(locale, 'What stays on the home page', '首页展示原则')}</p>
+        <h2 id="why-title">{pick(locale, 'Keep the home page about public, verifiable work', '首页聚焦公开、可检查的基础能力')}</h2>
       </div>
       <div class="why-list">
         <article class="glass-2">
-          <h3>{pick(locale, 'Reduce invisible local clutter', '减少不可见的本地负担')}</h3>
-          <p>{pick(locale, 'Make generated files, caches, releases, and product operations easier to understand and control.', '让生成文件、缓存、发布和产品运营变得更容易理解和控制。')}</p>
+          <h3>{pick(locale, 'Public projects first', '公开项目优先')}</h3>
+          <p>{pick(locale, 'The home page points to repositories that can be opened, read, and checked directly.', '首页优先指向可以直接打开、阅读和检查的仓库。')}</p>
         </article>
         <article class="glass-2">
-          <h3>{pick(locale, 'Avoid overbuilt tools', '避免过度复杂')}</h3>
-          <p>{pick(locale, 'Each product starts with a sharp workflow instead of a generic platform story.', '每个产品都从明确工作流出发，而不是先讲一个泛平台故事。')}</p>
+          <h3>{pick(locale, 'Products stay separate', '产品单独展示')}</h3>
+          <p>{pick(locale, 'Commercial product details belong on the product page, not mixed into the home page.', '商业产品详情放在产品页，不混在首页的开源项目介绍里。')}</p>
         </article>
         <article class="glass-2">
-          <h3>{pick(locale, 'Keep the path open', '保持入口清晰')}</h3>
-          <p>{pick(locale, 'Use the product, read the docs, or inspect the source from one brand home.', '从同一个品牌入口使用产品、阅读文档或查看源码。')}</p>
+          <h3>{pick(locale, 'No inflated claims', '不过度包装')}</h3>
+          <p>{pick(locale, 'Descriptions should say what exists today and avoid promising more than the project shows.', '文案只说明当前已经存在的内容，避免超过项目现状的承诺。')}</p>
         </article>
-      </div>
-    </section>
-
-    <section class="products" aria-labelledby="products-title">
-      <div class="section-head split">
-        <div>
-          <p class="eyebrow">{pick(locale, 'Product', '产品')}</p>
-          <h2 id="products-title">{pick(locale, 'Private products, shown deliberately.', '私有产品，谨慎公开展示。')}</h2>
-        </div>
-        <a class="text-link" href={pick(locale, '/products', '/zh/products')}>{pick(locale, 'Clear product page', 'Clear 产品页')}</a>
-      </div>
-      <div class="product-grid">
-        {publicProducts.map((item) => (
-          <article class="glass product-card" data-accent={item.accent}>
-            <p class="status">{pick(locale, item.status, item.statusZh)}</p>
-            <h3>{pick(locale, item.name, item.nameZh)}</h3>
-            <p>{pick(locale, item.summary, item.summaryZh)}</p>
-            <div class="product-actions">
-              <a href={localizeSiteHref(item.href)} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noreferrer' : undefined}>
-                {pick(locale, 'View product', '查看产品')}
-              </a>
-            </div>
-          </article>
-        ))}
       </div>
     </section>
   </main>
@@ -227,7 +175,6 @@ const openProjects = [
 
   .values,
   .open-work,
-  .products,
   .why {
     padding: clamp(48px, 7vw, 92px) clamp(20px, 5vw, 72px);
   }
@@ -251,8 +198,7 @@ const openProjects = [
   }
 
   .value-grid,
-  .open-grid,
-  .product-grid {
+  .open-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 18px;
@@ -260,14 +206,12 @@ const openProjects = [
 
   .value-card,
   .open-card,
-  .product-card,
   .why-list article {
     padding: 26px;
   }
 
   .value-card h3,
   .open-card h3,
-  .product-card h3,
   .why-list h3 {
     margin: 0;
     color: var(--ink);
@@ -276,7 +220,6 @@ const openProjects = [
 
   .value-card p,
   .open-card p,
-  .product-card p,
   .why-list p {
     margin: 10px 0 0;
     color: var(--ink-2);
@@ -302,14 +245,6 @@ const openProjects = [
     min-height: 210px;
   }
 
-  .product-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 22px;
-  }
-
-  .product-actions a,
   .text-link {
     color: var(--brand-600);
     font-weight: 700;
@@ -322,7 +257,6 @@ const openProjects = [
   }
 
   .open-card:hover,
-  .product-card:hover,
   .value-card:hover {
     transform: translateY(-2px);
   }
@@ -330,7 +264,6 @@ const openProjects = [
   @media (max-width: 980px) {
     .value-grid,
     .open-grid,
-    .product-grid,
     .why-list {
       grid-template-columns: 1fr 1fr;
     }
@@ -339,7 +272,6 @@ const openProjects = [
   @media (max-width: 680px) {
     .value-grid,
     .open-grid,
-    .product-grid,
     .why-list {
       grid-template-columns: 1fr;
     }

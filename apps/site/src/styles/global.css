@@ -250,16 +250,6 @@ img {
 .site-nav .icon-btn {
   padding: 8px;
 }
-.site-nav .nav-cta {
-  color: #fff;
-  background: linear-gradient(135deg, var(--brand-600), var(--brand-500));
-  box-shadow: 0 8px 20px rgba(63, 127, 217, 0.22);
-}
-.site-nav .nav-cta:hover {
-  color: #fff;
-  background: linear-gradient(135deg, var(--brand-500), var(--brand-400));
-  transform: translateY(-1px);
-}
 
 /* policies dropdown */
 .nav-dropdown {
