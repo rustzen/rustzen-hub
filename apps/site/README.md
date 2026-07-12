@@ -20,13 +20,13 @@ Rustzen Site is the static official website for the Rustzen macOS tool Zen Clear
 - Astro
 - Vercel
 
-`pnpm build` exports static files into `dist/`.
+`npm run build` exports static files into `dist/`.
 
 ## Development
 
 ```bash
-pnpm install --frozen-lockfile
-pnpm dev
+npm ci
+npm run dev
 ```
 
 ## Content Sources

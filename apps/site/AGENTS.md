@@ -28,9 +28,9 @@ It was migrated from the legacy `rustzen/rzen-portal` repository.
 Run from the repository root unless there is a narrow reason to work inside this app:
 
 ```bash
-pnpm --filter @rustzen/site build
-pnpm --filter @rustzen/site dev
-pnpm --filter @rustzen/site preview
+npm run build --workspace @rustzen/site
+npm run dev --workspace @rustzen/site
+npm run preview --workspace @rustzen/site
 ```
 
 ## Work Rules

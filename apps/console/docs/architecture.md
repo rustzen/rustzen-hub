@@ -226,7 +226,7 @@ Prisma models:
 - `BillingEvent`: webhook/event archive.
 
 The seed creates `rustzen-clear` and `rustzen-clipboard` products. Local
-`pnpm db:push`, `pnpm db:seed`, and `pnpm db:verify` passed against Homebrew
+`npm run db:push`, `npm run db:seed`, and `npm run db:verify` passed against Homebrew
 PostgreSQL database `rustzen_console_test` on 2026-06-15.
 
 ## Security And Review Gates

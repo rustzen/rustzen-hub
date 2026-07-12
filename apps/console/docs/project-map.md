@@ -33,20 +33,20 @@ Command evidence:
 
 ## Package Manager And Commands
 
-`pnpm-lock.yaml` and `pnpm-workspace.yaml` are the package-manager evidence.
+`package-lock.json` and the root `package.json` workspaces field are the package-manager evidence.
 Commands below come from `package.json`.
 
 | Command | Script | Verification |
 | --- | --- | --- |
-| `pnpm dev` | `next dev` | Not run in this pass |
-| `pnpm build` | `node scripts/with-env.mjs prisma generate && next build` | Passed on 2026-06-16 |
-| `pnpm start` | `next start` | Not run; requires prior build |
-| `pnpm lint` | `eslint .` | Passed on 2026-06-16 |
-| `pnpm db:generate` | `node scripts/with-env.mjs prisma generate` | Passed on 2026-06-15 |
-| `pnpm db:push` | `node scripts/with-env.mjs prisma db push` | Passed against local `rustzen_console_test` on 2026-06-15 |
-| `pnpm db:seed` | `node scripts/with-env.mjs node prisma/seed.mjs` | Passed against local `rustzen_console_test` on 2026-06-15 |
-| `pnpm db:verify` | `node scripts/verify-db.mjs` | Passed against local `rustzen_console_test` on 2026-06-15 |
-| `pnpm db:studio` | `node scripts/with-env.mjs prisma studio` | Not run |
+| `npm run dev` | `next dev` | Not run in this pass |
+| `npm run build` | `node scripts/with-env.mjs prisma generate && next build` | Passed on 2026-06-16 |
+| `npm run start` | `next start` | Not run; requires prior build |
+| `npm run lint` | `eslint .` | Passed on 2026-06-16 |
+| `npm run db:generate` | `node scripts/with-env.mjs prisma generate` | Passed on 2026-06-15 |
+| `npm run db:push` | `node scripts/with-env.mjs prisma db push` | Passed against local `rustzen_console_test` on 2026-06-15 |
+| `npm run db:seed` | `node scripts/with-env.mjs node prisma/seed.mjs` | Passed against local `rustzen_console_test` on 2026-06-15 |
+| `npm run db:verify` | `node scripts/verify-db.mjs` | Passed against local `rustzen_console_test` on 2026-06-15 |
+| `npm run db:studio` | `node scripts/with-env.mjs prisma studio` | Not run |
 
 ## Directory Map
 
@@ -148,7 +148,7 @@ remain Vercel-only and must not be committed.
   explicitly before switching Git source or replacing the project.
 - Prisma schema changes affect production data and need an explicit migration
   gate.
-- `pnpm db:push` mutates the target database. Use only against local test DB
+- `npm run db:push` mutates the target database. Use only against local test DB
   unless production approval is explicit.
 - Billing checkout depends on `CREEM_API_KEY`; webhook verification depends on
   `CREEM_WEBHOOK_SECRET`.

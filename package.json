@@ -2,13 +2,17 @@
   "name": "rustzen-hub",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.7.0",
+  "packageManager": "npm@12.0.1",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "pnpm -r --if-present build",
-    "lint": "pnpm --filter @rustzen/console lint",
-    "dev:site": "pnpm --filter @rustzen/site dev",
-    "dev:console": "pnpm --filter @rustzen/console dev",
-    "build:site": "pnpm --filter @rustzen/site build",
-    "build:console": "pnpm --filter @rustzen/console build"
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspace @rustzen/console",
+    "dev:site": "npm run dev --workspace @rustzen/site",
+    "dev:console": "npm run dev --workspace @rustzen/console",
+    "build:site": "npm run build --workspace @rustzen/site",
+    "build:console": "npm run build --workspace @rustzen/console"
   }
 }

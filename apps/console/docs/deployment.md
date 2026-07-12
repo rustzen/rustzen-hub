@@ -16,9 +16,9 @@ PostgreSQL. Local validation used Homebrew PostgreSQL 17 and a local
 | Project/team | Vercel project `cloud` under `abin-projects` is the pre-cutover console project and carries the production env set | live Vercel query on 2026-07-01 |
 | Domain | `console.rustzen.dev` | target domain for the new architecture; bind during the `rustzen-hub` cutover |
 | Framework | Next.js from `package.json` and `src/app` | source |
-| Build command | `pnpm build` -> `node scripts/with-env.mjs prisma generate && next build` | verified locally |
+| Build command | `npm run build` -> `node scripts/with-env.mjs prisma generate && next build` | verified locally |
 | Output directory | Next.js managed output | local build verified; Vercel output not verified |
-| Package manager | `pnpm-lock.yaml`, `pnpm-workspace.yaml` | source |
+| Package manager | `package-lock.json`, root `package.json` workspaces | source |
 | Env source | `.env.example` names | source |
 | Vercel env | Existing `cloud` Vercel project env includes database, Blob, Creem, admin, license, and public URL groups | live Vercel query on 2026-07-01; values not committed |
 | Runtime limits | Not found | not verified |
@@ -62,12 +62,12 @@ Verified on 2026-06-15:
 2. `pg_isready -h 127.0.0.1 -p 5432`
 3. `createdb -h 127.0.0.1 -p 5432 rustzen_console_test`
 4. `.env.local` pointed Prisma URLs to `rustzen_console_test`
-5. `pnpm db:push`
-6. `pnpm db:seed`
-7. `pnpm db:verify`
+5. `npm run db:push`
+6. `npm run db:seed`
+7. `npm run db:verify`
 8. `psql -h 127.0.0.1 -p 5432 -d rustzen_console_test -c 'SELECT code, name FROM "Product" ORDER BY code;'`
 
-`pnpm db:verify` reported:
+`npm run db:verify` reported:
 
 ```json
 {
@@ -87,16 +87,16 @@ Before any deploy:
 2. Confirm current `package.json` scripts and package manager.
 3. Configure required Vercel preview/prod env values; do not commit secrets.
 4. Decide Prisma migration strategy before touching a real database.
-5. Run `pnpm db:generate`, `pnpm lint`, and `pnpm build`.
+5. Run `npm run db:generate`, `npm run lint`, and `npm run build`.
 6. If database behavior changed, validate against a local test DB with
-   `pnpm db:push`, `pnpm db:seed`, and `pnpm db:verify`.
+   `npm run db:push`, `npm run db:seed`, and `npm run db:verify`.
 7. Confirm Vercel project/team/domain and keep Prisma-backed API routes on the
    Node runtime.
 8. Confirm live billing product configuration in the provider dashboard without
    copying live identifiers into repository files.
 9. Record verification evidence in the task report.
 
-`pnpm db:push` against production, production Vercel deploys, and real webhook
+`npm run db:push` against production, production Vercel deploys, and real webhook
 testing require explicit user approval.
 
 ## Not Found

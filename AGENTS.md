@@ -28,18 +28,18 @@ This repository replaces the old split between `rustzen/rzen-portal` and `rustze
 
 ## Commands
 
-Use pnpm from the repository root:
+Use npm from the repository root:
 
 ```bash
-pnpm install
-pnpm build
-pnpm lint
-pnpm --filter @rustzen/site build
-pnpm --filter @rustzen/console lint
-pnpm --filter @rustzen/console build
+npm install
+npm run build
+npm run lint
+npm run build --workspace @rustzen/site
+npm run lint --workspace @rustzen/console
+npm run build --workspace @rustzen/console
 ```
 
-Use `/private/tmp/pnpm-store` for dependency installs when running Codex-managed pnpm installs on this machine.
+Use `/private/tmp/npm-cache` for dependency installs when running Codex-managed npm installs on this machine.
 
 ## Reporting
 

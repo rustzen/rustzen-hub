@@ -42,7 +42,7 @@ const missing = required.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
   console.error(`Missing required database env: ${missing.join(', ')}`);
-  console.error('Run `pnpm dlx vercel env pull .env.local --yes --environment=development` or create .env.local.');
+  console.error('Run `npx vercel env pull .env.local --yes --environment=development` or create .env.local.');
   process.exit(1);
 }
 

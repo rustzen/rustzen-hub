@@ -17,7 +17,7 @@ source files from ignored local runtime/deploy artifacts.
 ## Current Boundary
 
 - source: `README.md`, `.env.example`, `.gitignore`, `AGENTS.md`, `docs/`,
-  `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `prisma/`,
+  `package.json`, `package-lock.json`, root package workspaces, `prisma/`,
   `scripts/`, `src/`, `tsconfig.json`, `eslint.config.mjs`, `next-env.d.ts`
 - modified tracked during this standardization pass:
   `.env.example`, `docs/README.md`, `docs/architecture.md`,
@@ -33,9 +33,9 @@ source files from ignored local runtime/deploy artifacts.
   provider integration helpers and tests
 - ignored/local-only: `.next/`, `.vercel/`, `node_modules/`
 - ignored local secret/runtime env: `.env.local`, `.env`, `.env.*.local`
-- verified locally on 2026-06-15: `pnpm db:generate`, `pnpm db:push`,
-  `pnpm db:seed`, `pnpm db:verify`
-- verified locally on 2026-06-16: `pnpm lint`, `pnpm build`
+- verified locally on 2026-06-15: `npm run db:generate`, `npm run db:push`,
+  `npm run db:seed`, `npm run db:verify`
+- verified locally on 2026-06-16: `npm run lint`, `npm run build`
 
 Vercel project linkage exists locally, but `vercel env ls` returned no configured
 environment variables on 2026-06-15. Production deploy/env state remains not

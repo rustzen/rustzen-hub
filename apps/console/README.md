@@ -24,17 +24,17 @@ Rustzen Platform is the admin dashboard and platform API surface for Rustzen mac
 ## Development
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 Useful checks:
 
 ```bash
-pnpm db:generate
-pnpm db:verify
-pnpm lint
-pnpm build
+npm run db:generate
+npm run db:verify
+npm run lint
+npm run build
 ```
 
 ## Environment
