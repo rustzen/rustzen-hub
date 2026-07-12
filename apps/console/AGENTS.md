@@ -27,10 +27,10 @@ It was migrated from the legacy `rustzen/rzen-platform` repository.
 Run from the repository root unless there is a narrow reason to work inside this app:
 
 ```bash
-pnpm --filter @rustzen/console lint
-pnpm --filter @rustzen/console build
-pnpm --filter @rustzen/console db:generate
-pnpm --filter @rustzen/console dev
+npm run lint --workspace @rustzen/console
+npm run build --workspace @rustzen/console
+npm run db:generate --workspace @rustzen/console
+npm run dev --workspace @rustzen/console
 ```
 
 ## Work Rules

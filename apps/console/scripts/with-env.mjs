@@ -44,7 +44,7 @@ if (args.length === 0) {
   process.exit(1);
 }
 
-const command = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
+const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const result = spawnSync(command, ['exec', ...args], {
   env: process.env,
   stdio: 'inherit',

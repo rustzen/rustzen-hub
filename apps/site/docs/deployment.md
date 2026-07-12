@@ -11,8 +11,8 @@
 | Field | Value | Fact boundary |
 | --- | --- | --- |
 | `framework` | `null` | tracked |
-| `installCommand` | `pnpm install --frozen-lockfile` | tracked |
-| `buildCommand` | `pnpm build` | tracked |
+| `installCommand` | `npm ci` | tracked |
+| `buildCommand` | `npm run build` | tracked |
 | `outputDirectory` | `dist` | tracked |
 
 `astro.config.mjs` sets `output: 'static'`, so `dist/` is the expected static output directory.
@@ -25,21 +25,21 @@ Do not copy concrete project, organization, or team identifiers from `.vercel/pr
 
 ## Package Manager And Commands
 
-Package manager: `pnpm`.
+Package manager: `npm`.
 
 Real scripts from `package.json`:
 
 ```bash
-pnpm dev
-pnpm build
-pnpm preview
-pnpm astro
+npm run dev
+npm run build
+npm run preview
+npm run astro
 ```
 
 Use the install command from `vercel.json` for clean installs:
 
 ```bash
-pnpm install --frozen-lockfile
+npm ci
 ```
 
 ## Environment And Secrets
@@ -83,6 +83,6 @@ Before changing deployment behavior, record:
 - the package manager and build command;
 - the output directory;
 - any domain, env, or secret changes;
-- whether `pnpm build` and any deployment preview were actually run.
+- whether `npm run build` and any deployment preview were actually run.
 
 Do not apply Rust service deployment rules such as `/opt`, systemd, Docker, release bundle, or `target/rustzen-*`.

@@ -17,19 +17,19 @@
 ## Commands
 
 ```bash
-pnpm install
-pnpm build
-pnpm lint
-pnpm dev:site
-pnpm dev:console
+npm install
+npm run build
+npm run lint
+npm run dev:site
+npm run dev:console
 ```
 
 Run app-specific commands with filters:
 
 ```bash
-pnpm --filter @rustzen/site build
-pnpm --filter @rustzen/console lint
-pnpm --filter @rustzen/console build
+npm run build --workspace @rustzen/site
+npm run lint --workspace @rustzen/console
+npm run build --workspace @rustzen/console
 ```
 
 ## Migration Notes
