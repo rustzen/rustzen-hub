@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import {
+  isAllowedUpdateAssetPath,
+  resolveUpdateProduct,
+  updateBlobOrigin,
+  updateManifestUrl,
+  type UpdateProductConfig,
+} from '@/lib/update-products';
 
 export const runtime = 'nodejs';
 
-const DEFAULT_RUSTZEN_CLEAR_UPDATE_MANIFEST_URL =
-  'https://zlobtosdpjhocxfj.public.blob.vercel-storage.com/rustzen-clear/releases/latest/zen-clear-updates.json';
-const DEFAULT_RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN =
-  'https://zlobtosdpjhocxfj.public.blob.vercel-storage.com';
-
 const MANIFEST_FETCH_TIMEOUT_MS = 8_000;
-
-function manifestUrl() {
-  const configuredUrl = process.env.RUSTZEN_CLEAR_UPDATE_MANIFEST_URL?.trim();
-  return configuredUrl || DEFAULT_RUSTZEN_CLEAR_UPDATE_MANIFEST_URL;
-}
 
 async function fetchManifest(url: string) {
   const controller = new AbortController();
@@ -46,7 +43,11 @@ async function fetchManifest(url: string) {
   }
 }
 
-function proxiedDownloadUrl(request: NextRequest, assetUrl: string) {
+function proxiedDownloadUrl(
+  request: NextRequest,
+  assetUrl: string,
+  product: UpdateProductConfig,
+) {
   let parsed: URL;
   try {
     parsed = new URL(assetUrl);
@@ -54,14 +55,13 @@ function proxiedDownloadUrl(request: NextRequest, assetUrl: string) {
     return assetUrl;
   }
 
-  const blobOrigin = process.env.RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN?.trim().replace(/\/+$/, '') ||
-    DEFAULT_RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN;
+  const blobOrigin = updateBlobOrigin(product);
   if (parsed.origin !== blobOrigin) {
     return assetUrl;
   }
 
   const pathname = parsed.pathname.replace(/^\/+/, '');
-  if (!pathname.startsWith('rustzen-clear/releases/')) {
+  if (!isAllowedUpdateAssetPath(pathname, product)) {
     return assetUrl;
   }
 
@@ -76,7 +76,11 @@ function proxiedDownloadUrl(request: NextRequest, assetUrl: string) {
   return rewritten.toString();
 }
 
-function rewriteManifestDownloadUrls(request: NextRequest, manifest: unknown) {
+function rewriteManifestDownloadUrls(
+  request: NextRequest,
+  manifest: unknown,
+  product: UpdateProductConfig,
+) {
   if (!manifest || typeof manifest !== 'object') {
     return manifest;
   }
@@ -104,7 +108,7 @@ function rewriteManifestDownloadUrls(request: NextRequest, manifest: unknown) {
         platform,
         {
           ...entry,
-          url: proxiedDownloadUrl(request, entry.url),
+          url: proxiedDownloadUrl(request, entry.url, product),
         },
       ];
     }),
@@ -117,10 +121,15 @@ function rewriteManifestDownloadUrls(request: NextRequest, manifest: unknown) {
 }
 
 export async function GET(request: NextRequest) {
-  const url = manifestUrl();
+  const product = resolveUpdateProduct(request.nextUrl.searchParams.get('product'));
+  if (!product) {
+    return NextResponse.json({ error: 'unsupported_update_product' }, { status: 404 });
+  }
+
+  const url = updateManifestUrl(product);
   const result = await fetchManifest(url);
   if (result.ok) {
-    return NextResponse.json(rewriteManifestDownloadUrls(request, result.manifest), {
+    return NextResponse.json(rewriteManifestDownloadUrls(request, result.manifest, product), {
       headers: {
         'Cache-Control': 'public, max-age=60, stale-while-revalidate=300',
       },

@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import {
+  isAllowedUpdateAssetPath,
+  resolveUpdateProduct,
+  updateBlobOrigin,
+  updateManifestUrl,
+  updateProductForAssetPath,
+  type UpdateProductConfig,
+} from '@/lib/update-products';
 
 export const runtime = 'nodejs';
 
-const DEFAULT_RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN =
-  'https://zlobtosdpjhocxfj.public.blob.vercel-storage.com';
-const DEFAULT_RUSTZEN_CLEAR_UPDATE_MANIFEST_URL =
-  'https://zlobtosdpjhocxfj.public.blob.vercel-storage.com/rustzen-clear/releases/latest/zen-clear-updates.json';
 const MANIFEST_FETCH_TIMEOUT_MS = 8_000;
 const ASSET_CHECK_TIMEOUT_MS = 4_000;
 
@@ -13,30 +17,12 @@ type RouteContext = {
   params: Promise<{ path?: string[] }> | { path?: string[] };
 };
 
-function blobOrigin() {
-  return (
-    process.env.RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN?.trim().replace(/\/+$/, '') ||
-    DEFAULT_RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN
-  );
-}
-
-function isAllowedPath(path: string) {
-  return /^rustzen-clear\/releases\/[^/]+\/[^/]+\.(?:app\.tar\.gz|dmg)$/.test(path);
-}
-
-function manifestUrl() {
-  return (
-    process.env.RUSTZEN_CLEAR_UPDATE_MANIFEST_URL?.trim() ||
-    DEFAULT_RUSTZEN_CLEAR_UPDATE_MANIFEST_URL
-  );
-}
-
-async function fetchManifest() {
+async function fetchManifest(product: UpdateProductConfig) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), MANIFEST_FETCH_TIMEOUT_MS);
 
   try {
-    const response = await fetch(manifestUrl(), {
+    const response = await fetch(updateManifestUrl(product), {
       headers: { accept: 'application/json' },
       cache: 'no-store',
       signal: controller.signal,
@@ -90,7 +76,11 @@ function latestDownloadAssetUrl(manifest: unknown, platform: string) {
   return preferredEntry.url;
 }
 
-function inferDmgAssetUrl(manifest: unknown, updaterAssetUrl: string) {
+function inferDmgAssetUrl(
+  manifest: unknown,
+  updaterAssetUrl: string,
+  product: UpdateProductConfig,
+) {
   if (!manifest || typeof manifest !== 'object') {
     return null;
   }
@@ -108,7 +98,7 @@ function inferDmgAssetUrl(manifest: unknown, updaterAssetUrl: string) {
   }
 
   const pathParts = parsed.pathname.split('/');
-  pathParts[pathParts.length - 1] = `ZenClear_${version.trim()}_universal.dmg`;
+  pathParts[pathParts.length - 1] = product.inferredDmgName(version.trim());
   parsed.pathname = pathParts.join('/');
   parsed.search = '';
 
@@ -133,7 +123,11 @@ async function assetExists(assetUrl: string) {
   }
 }
 
-function proxiedDownloadUrl(request: NextRequest, assetUrl: string) {
+function proxiedDownloadUrl(
+  request: NextRequest,
+  assetUrl: string,
+  product: UpdateProductConfig,
+) {
   let parsed: URL;
   try {
     parsed = new URL(assetUrl);
@@ -141,12 +135,12 @@ function proxiedDownloadUrl(request: NextRequest, assetUrl: string) {
     return null;
   }
 
-  if (parsed.origin !== blobOrigin()) {
+  if (parsed.origin !== updateBlobOrigin(product)) {
     return parsed;
   }
 
   const pathname = parsed.pathname.replace(/^\/+/, '');
-  if (!isAllowedPath(pathname)) {
+  if (!isAllowedUpdateAssetPath(pathname, product)) {
     return null;
   }
 
@@ -159,13 +153,18 @@ function proxiedDownloadUrl(request: NextRequest, assetUrl: string) {
 }
 
 async function redirectToLatest(request: NextRequest) {
+  const product = resolveUpdateProduct(request.nextUrl.searchParams.get('product'));
+  if (!product) {
+    return NextResponse.json({ error: 'unsupported_update_product' }, { status: 404 });
+  }
+
   const platform = request.nextUrl.searchParams.get('platform') ?? 'darwin-universal';
   const format = request.nextUrl.searchParams.get('format') ?? 'dmg';
-  const manifest = await fetchManifest();
+  const manifest = await fetchManifest(product);
   const updaterAssetUrl = latestUpdaterAssetUrl(manifest, platform);
   const dmgAssetUrl =
     latestDownloadAssetUrl(manifest, platform) ??
-    (updaterAssetUrl ? inferDmgAssetUrl(manifest, updaterAssetUrl) : null);
+    (updaterAssetUrl ? inferDmgAssetUrl(manifest, updaterAssetUrl, product) : null);
   const assetUrl = format === 'updater' ? updaterAssetUrl : dmgAssetUrl;
 
   if (!assetUrl) {
@@ -176,13 +175,13 @@ async function redirectToLatest(request: NextRequest) {
     return NextResponse.json({ error: 'latest_dmg_asset_not_found' }, { status: 404 });
   }
 
-  const target = proxiedDownloadUrl(request, assetUrl);
+  const target = proxiedDownloadUrl(request, assetUrl, product);
   if (!target) {
     return NextResponse.json({ error: 'latest_update_asset_not_found' }, { status: 404 });
   }
 
   request.nextUrl.searchParams.forEach((value, key) => {
-    if (key !== 'platform' && key !== 'format') {
+    if (key !== 'platform' && key !== 'format' && key !== 'product') {
       target.searchParams.set(key, value);
     }
   });
@@ -201,11 +200,12 @@ async function redirectToBlob(request: NextRequest, context: RouteContext) {
     return redirectToLatest(request);
   }
 
-  if (!isAllowedPath(path)) {
+  const product = updateProductForAssetPath(path);
+  if (!product || !isAllowedUpdateAssetPath(path, product)) {
     return NextResponse.json({ error: 'update_asset_not_found' }, { status: 404 });
   }
 
-  const target = new URL(`${blobOrigin()}/${path}`);
+  const target = new URL(`${updateBlobOrigin(product)}/${path}`);
   request.nextUrl.searchParams.forEach((value, key) => {
     target.searchParams.set(key, value);
   });

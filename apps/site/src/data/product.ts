@@ -260,7 +260,6 @@ export const products = [
     fit: 'For developers whose Mac fills up with generated project data.',
     fitZh: '适合经常被项目生成数据占满磁盘的开发者。',
     downloadHref: '',
-    githubHref: 'https://github.com/rustzen/rustzen-clear',
     docsHref: '/products',
     accent: 'clear',
   },

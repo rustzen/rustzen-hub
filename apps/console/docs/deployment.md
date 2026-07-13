@@ -43,6 +43,7 @@ From `.env.example`:
 | License/webhook | `LICENSE_JWT_SECRET`, `LEMONSQUEEZY_WEBHOOK_SECRET`, `CREEM_WEBHOOK_SECRET` | `LICENSE_JWT_SECRET` signs opaque license bearer tokens and is required in production; webhook secrets verify provider HMAC signatures |
 | Billing checkout | `CREEM_API_KEY`, `CREEM_RUSTZEN_CLEAR_PRODUCT_ID`, `CREEM_CHECKOUT_SUCCESS_URL` | Rustzen Clear Pro checkout and subscription fulfillment; live product identifierentifiers must be configured through deployment secrets |
 | Zen Clear updater/downloads | `RUSTZEN_CLEAR_UPDATE_MANIFEST_URL`, `RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN` | Manifest source and optional Blob origin allow-list for rewriting update asset URLs through `/api/updates/download`; `/api/updates/download/latest` resolves the current DMG for manual downloads, while `format=updater` resolves the updater archive |
+| Rustzen Clipboard updater/downloads | `RUSTZEN_CLIPBOARD_UPDATE_MANIFEST_URL`, `RUSTZEN_CLIPBOARD_UPDATE_BLOB_ORIGIN` | Clipboard-specific manifest source and Blob origin allow-list; callers must use `product=rustzen-clipboard`, and assets remain under the `rustzen-clipboard/releases/` prefix |
 | Legacy license proxy | `RUSTZEN_LICENSE_SERVER_URL`, `RUSTZEN_LICENSE_SERVER_TOKEN` | Optional external license-server compatibility path, not the default desktop-client API |
 
 The intended production domains are `https://console.rustzen.dev` for the

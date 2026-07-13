@@ -7,6 +7,7 @@
     "build": "node scripts/with-env.mjs prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
+    "test:update-products": "node --experimental-strip-types --test src/lib/update-products.test.ts",
     "db:generate": "node scripts/with-env.mjs prisma generate",
     "db:seed": "node scripts/with-env.mjs node prisma/seed.mjs",
     "db:verify": "node scripts/verify-db.mjs",

@@ -89,8 +89,8 @@ Commands below come from `package.json`.
 | `GET /api/billing/checkout?product=rustzen-clear` | `src/app/api/billing/checkout/route.ts` | Create a billing checkout for Rustzen Clear Pro | untracked source candidate |
 | `POST /api/ls/activate` | `src/app/api/ls/activate/route.ts` | Legacy proxy activation request to external license server | source |
 | `GET /api/ls/health` | `src/app/api/ls/health/route.ts` | Legacy proxy external license-server health | source |
-| `GET /api/updates/check` | `src/app/api/updates/check/route.ts` | Tauri updater manifest endpoint for Rustzen Clear | untracked source candidate |
-| `GET /api/updates/download/latest?platform=darwin-universal` | `src/app/api/updates/download/[[...path]]/route.ts` | Stable public latest download resolver that reads the update manifest and redirects manual downloads to the current DMG | modified tracked |
+| `GET /api/updates/check?product=<code>` | `src/app/api/updates/check/route.ts` | Product-isolated Tauri updater manifest endpoint for Rustzen Clear and Clipboard | source |
+| `GET /api/updates/download/latest?product=<code>&platform=darwin-universal` | `src/app/api/updates/download/[[...path]]/route.ts` | Product-isolated latest download resolver that reads the selected manifest and redirects manual downloads to the current DMG | source |
 | `GET /api/versions?product=<code>` | `src/app/api/versions/route.ts` | Latest release metadata by product/platform | source |
 | Billing provider webhook route | Provider webhook handler | Verify billing provider signatures and synchronize subscription-backed licenses | untracked source candidate |
 | `POST /api/webhooks/lemonsqueezy` | `src/app/api/webhooks/lemonsqueezy/route.ts` | Verify Lemon Squeezy signature and create billing/license records | source |
@@ -133,6 +133,8 @@ From `.env.example`:
 - `CREEM_CHECKOUT_SUCCESS_URL`
 - `RUSTZEN_CLEAR_UPDATE_MANIFEST_URL`
 - `RUSTZEN_CLEAR_UPDATE_BLOB_ORIGIN`
+- `RUSTZEN_CLIPBOARD_UPDATE_MANIFEST_URL`
+- `RUSTZEN_CLIPBOARD_UPDATE_BLOB_ORIGIN`
 
 Live billing product identifierentifiers are runtime configuration and must be provided
 through `CREEM_RUSTZEN_CLEAR_PRODUCT_ID`; live values must not be committed.
