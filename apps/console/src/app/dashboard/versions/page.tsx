@@ -114,9 +114,9 @@ export default async function VersionsPage() {
     >
       <div className="space-y-6">
         {loadError ? (
-          <Alert className="border-destructive/30 bg-red-50 text-red-900">
+          <Alert className="border-destructive/30 bg-destructive/5 text-destructive">
             <AlertTitle>Database read failed</AlertTitle>
-            <AlertDescription className="text-red-800">{loadError}</AlertDescription>
+            <AlertDescription className="text-destructive/80">{loadError}</AlertDescription>
           </Alert>
         ) : null}
 
