@@ -14,6 +14,13 @@
 - `packages/config`: shared TypeScript, ESLint, Tailwind, and build configuration.
 - `packages/api-client`: shared API types and client helpers after the console API contract stabilizes.
 
+## Contracts
+
+- `contracts/entitlements/v1.json`: authoritative Rustzen Pro product,
+  feature, protocol, and runtime-policy registry.
+- Rustzen Tools may keep an exact versioned snapshot, but it is not a second
+  policy authority.
+
 ## Commands
 
 ```bash
@@ -39,7 +46,9 @@ npm run build --workspace @rustzen/console
 - The old repositories should be treated as legacy sources after this monorepo is verified and pushed.
 - Generated/local-only directories such as `.vercel/`, `.next/`, `.astro/`, `dist/`, `out/`, and `node_modules/` are not source truth.
 
-## Ownership and Commercial Rights
+## License and Commercial Rights
 
-Ownership, branding, trademark, domain, hosted-service, package publishing, and
-commercial-use boundaries are documented in [NOTICE.md](./NOTICE.md).
+This repository is proprietary. See [LICENSE.md](./LICENSE.md),
+[LICENSE-SCOPE.md](./LICENSE-SCOPE.md), [NOTICE.md](./NOTICE.md),
+[TRADEMARKS.md](./TRADEMARKS.md), and
+[THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md).
